@@ -1,4 +1,4 @@
-import 'package:ani_rate/pages/home.dart';
+import 'package:ani_rate/pages/login_page.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -31,7 +31,7 @@ class SplashScreen extends StatelessWidget {
       ),
       splashIconSize: 350,
       duration: 1000,
-      nextScreen: const MyHomeScreen(),
+      nextScreen: LoginPage(),
       splashTransition: SplashTransition.scaleTransition,
       pageTransitionType: PageTransitionType.leftToRightWithFade,
       animationDuration: const Duration(milliseconds: 1000),
