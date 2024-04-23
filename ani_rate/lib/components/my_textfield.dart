@@ -27,12 +27,12 @@ class MyTextFiled extends StatelessWidget {
                   BorderSide(color: const Color.fromARGB(0, 255, 255, 255)),
             ),
             focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.grey),
+              borderSide: BorderSide(color: Color.fromARGB(255, 207, 94, 18)),
             ),
-            fillColor: Color.fromARGB(230, 209, 208, 208),
+            fillColor: Color.fromARGB(230, 36, 33, 33),
             filled: true,
             hintText: hintText,
-            hintStyle: TextStyle(color: Color.fromARGB(255, 133, 133, 133))),
+            hintStyle: TextStyle(color: Color.fromRGBO(255, 80, 61, 1))),
       ),
     );
   }

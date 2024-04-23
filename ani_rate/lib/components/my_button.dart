@@ -17,7 +17,9 @@ class MyButton extends StatelessWidget {
         child: const Center(
           child: Text(
             "Sign In",
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            style: TextStyle(
+                color: Color.fromARGB(255, 230, 106, 5),
+                fontWeight: FontWeight.bold),
           ),
         ),
       ),

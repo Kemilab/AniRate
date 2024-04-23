@@ -47,6 +47,7 @@ class LoginPage extends StatelessWidget {
                       padding: EdgeInsets.symmetric(horizontal: 60.0),
                       child: Image(image: AssetImage("assets/title.png")),
                     ),
+
                     const SizedBox(height: 20),
 
                     //username
@@ -68,14 +69,15 @@ class LoginPage extends StatelessWidget {
                     const SizedBox(height: 10),
 
                     //forgot
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 25.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           Text(
                             "Forgot Password?",
-                            style: TextStyle(color: Colors.grey[600]),
+                            style: TextStyle(
+                                color: Color.fromRGBO(255, 240, 0, 1)),
                           ),
                         ],
                       ),
@@ -88,36 +90,38 @@ class LoginPage extends StatelessWidget {
                       onTap: signUserIn,
                     ),
 
-                    const SizedBox(height: 50),
+                    const SizedBox(height: 25),
 
                     // or continu with
-                    Padding(
+                    /* Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 25.0),
                       child: Row(
                         children: [
                           Expanded(
                             child: Divider(
-                              thickness: 0.5,
+                              thickness: 5.5,
                               color: Colors.grey[500],
                             ),
                           ),
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 10.0),
+                         const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 10.0),
                             child: Text(
                               "Continue with",
-                              style: TextStyle(color: Colors.grey[700]),
+                              style: TextStyle(
+                                color: Color.fromARGB(255, 255, 115, 0),
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                           const Expanded(
                             child: Divider(
-                              thickness: 0.5,
-                              color: Color.fromARGB(255, 126, 32, 32),
+                              thickness: 5.5,
+                              color: Color.fromARGB(255, 138, 138, 138),
                             ),
                           ),
                         ],
                       ),
-                    ),
+                    ),*/
 
                     const SizedBox(height: 20),
 
@@ -143,7 +147,9 @@ class LoginPage extends StatelessWidget {
                       children: [
                         Text(
                           "Not a member?",
-                          style: TextStyle(color: Colors.black),
+                          style: TextStyle(
+                              color: Color.fromARGB(255, 245, 118, 14),
+                              fontWeight: FontWeight.bold),
                         ),
                         SizedBox(width: 4),
                         Text(
@@ -163,3 +169,9 @@ class LoginPage extends StatelessWidget {
     );
   }
 }
+
+
+
+//bugs
+ //add border inside continue width
+// change the text insidt the rext filed to someting else
