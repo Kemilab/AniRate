@@ -18,7 +18,7 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[400],
+      backgroundColor: Color.fromARGB(255, 241, 241, 241),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Center(
@@ -103,10 +103,10 @@ class LoginPage extends StatelessWidget {
                           style: TextStyle(color: Colors.grey[700]),
                         ),
                       ),
-                      Expanded(
+                      const Expanded(
                         child: Divider(
                           thickness: 0.5,
-                          color: Colors.grey[500],
+                          color: Color.fromARGB(255, 126, 32, 32),
                         ),
                       ),
                     ],

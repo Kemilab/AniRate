@@ -23,15 +23,16 @@ class MyTextFiled extends StatelessWidget {
         obscureText: obscureText,
         decoration: InputDecoration(
             enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.white),
+              borderSide:
+                  BorderSide(color: const Color.fromARGB(0, 255, 255, 255)),
             ),
             focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(color: Colors.grey),
             ),
-            fillColor: Color.fromARGB(255, 221, 220, 220),
+            fillColor: Color.fromARGB(230, 209, 208, 208),
             filled: true,
             hintText: hintText,
-            hintStyle: TextStyle(color: Colors.grey[500])),
+            hintStyle: TextStyle(color: Color.fromARGB(255, 133, 133, 133))),
       ),
     );
   }
