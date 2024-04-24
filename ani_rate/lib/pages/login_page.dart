@@ -1,21 +1,78 @@
+import 'dart:ui';
+
 import 'package:ani_rate/components/my_button.dart';
 import 'package:ani_rate/components/my_textfield.dart';
 import 'package:ani_rate/components/square_tile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+//import 'package:flutter_svg/flutter_svg.dart'; //kada ne korsitis to onda ti on kaze da to maknes jer nems niti jednu svg sliku
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   LoginPage({super.key});
 
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   //text editing controller
   final emailController = TextEditingController();
+
   final passwordController = TextEditingController();
 
   //sign in the user
-
   void signUserIn() async {
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailController.text, password: passwordController.text);
+    showDialog(
+        //login circle
+        context: context,
+        builder: (context) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        });
+    //try login
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: emailController.text, password: passwordController.text);
+      print("User loged in");
+      Navigator.pop(context); // pop the circle
+    } on FirebaseAuthException catch (e) {
+      print('Failed with error code: ${e.code}');
+      print(e.message);
+      Navigator.pop(context);
+      if (e.code == 'user-not-found') {
+        //wrong email
+        wrongEmailMessage();
+      } else if (e.code == 'wrong-password0') {
+        //wrong password
+        wrongPasswordMessage();
+      }
+    }
+    Navigator.pop(context);
+  }
+
+  //wrong email message popup
+  void wrongEmailMessage() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return const AlertDialog(
+          title: Text("Incorrect Email"),
+        );
+      },
+    );
+  }
+
+  //wrong email message popup
+  void wrongPasswordMessage() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return const AlertDialog(
+          title: Text("Incorrect Password"),
+        );
+      },
+    );
   }
 
   @override
@@ -29,8 +86,8 @@ class LoginPage extends StatelessWidget {
               image: DecorationImage(
                   image: AssetImage("assets/background.png"),
                   fit: BoxFit.cover,
-                  colorFilter:
-                      ColorFilter.mode(Colors.black26, BlendMode.overlay))),
+                  colorFilter: ColorFilter.mode(
+                      Color.fromARGB(104, 0, 0, 0), BlendMode.overlay))),
           child: SizedBox(
             height: double.infinity,
             child: SingleChildScrollView(
@@ -38,7 +95,7 @@ class LoginPage extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const SizedBox(height: 50),
+                    const SizedBox(height: 10),
                     //logo
                     /* SvgPicture.asset(
                       "assets/logo.svg",
@@ -46,18 +103,24 @@ class LoginPage extends StatelessWidget {
                       height: 100,
                     ),*/
                     const SizedBox(height: 0),
-                    //welcome back
+                    //Title
+
                     const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 60.0),
+                      padding: EdgeInsets.symmetric(horizontal: 150.0),
+                      child: Image(image: AssetImage("assets/logo.png")),
+                    ),
+
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 50.0),
                       child: Image(image: AssetImage("assets/title.png")),
                     ),
 
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 1),
 
                     //username
                     MyTextFiled(
                       controller: emailController,
-                      hintText: "Username",
+                      hintText: "Email",
                       obscureText: false,
                     ),
 
@@ -179,3 +242,5 @@ class LoginPage extends StatelessWidget {
 //bugs
  //add border inside continue width
 // change the text insidt the rext filed to someting else
+// if no password is eterd app crashes
+// random black screen when loging in or on a wrom cred.

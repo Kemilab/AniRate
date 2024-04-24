@@ -22,8 +22,8 @@ class SplashScreen extends StatelessWidget {
             ),
             Image.asset(
               "assets/title.png",
-              height: 150.0,
-              width: 150.0,
+              height: 300.0,
+              width: 300.0,
             ),
             /*const Text(
               "AniRate",
@@ -38,7 +38,7 @@ class SplashScreen extends StatelessWidget {
       splashTransition: SplashTransition.scaleTransition,
       pageTransitionType: PageTransitionType.leftToRightWithFade,
       animationDuration: const Duration(milliseconds: 1000),
-      backgroundColor: Color.fromARGB(221, 87, 187, 6),
+      backgroundColor: Color.fromARGB(207, 0, 0, 0),
     );
   }
 }

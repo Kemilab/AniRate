@@ -19,6 +19,8 @@ class MyTextFiled extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 25.0),
       child: TextField(
+        style: TextStyle(
+            color: Color.fromRGBO(255, 80, 61, 1)), //(228, 131, 41, 1)
         controller: controller,
         obscureText: obscureText,
         decoration: InputDecoration(
