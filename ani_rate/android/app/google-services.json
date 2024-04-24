@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "751171755695",
+    "project_id": "anirate-12615",
+    "storage_bucket": "anirate-12615.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:751171755695:android:05fd50b7baea3d62167e5a",
+        "android_client_info": {
+          "package_name": "com.example.ani_rate"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDxYK1ac-19Gju4vvmTBJUGey4i-X8DjXQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
