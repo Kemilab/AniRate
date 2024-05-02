@@ -21,8 +21,8 @@ class SplashScreen extends StatelessWidget {
             ),
             Image.asset(
               "assets/title.png",
-              height: 300.0,
-              width: 200.0,
+              height: 200.0,
+              width: 300.0,
             ),
             /*const Text(
               "AniRate",
