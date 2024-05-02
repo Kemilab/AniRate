@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:ani_rate/components/my_button.dart';
 import 'package:ani_rate/components/my_textfield.dart';
 import 'package:ani_rate/components/square_tile.dart';
@@ -106,7 +104,7 @@ class _LoginPageState extends State<LoginPage> {
                     //Title
 
                     const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 150.0),
+                      padding: EdgeInsets.symmetric(horizontal: 140.0),
                       child: Image(image: AssetImage("assets/logo.png")),
                     ),
 
