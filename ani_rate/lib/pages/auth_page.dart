@@ -14,10 +14,10 @@ class AuthPage extends StatelessWidget {
         builder: (context, snapshot) {
           //user logged in
           if (snapshot.hasData) {
-            return MyHomeScreen();
+             builder: (context) => MyHomeScreen();
+             return MyHomeScreen();
           }
           //user not logged in
-
           else {
             return LoginPage();
           }
