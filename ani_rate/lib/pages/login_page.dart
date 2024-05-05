@@ -1,6 +1,7 @@
 import 'package:ani_rate/components/my_button.dart';
 import 'package:ani_rate/components/my_textfield.dart';
 import 'package:ani_rate/components/square_tile.dart';
+import 'package:ani_rate/services/auth_services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -30,10 +31,14 @@ class _LoginPageState extends State<LoginPage> {
         });
     //try login
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: emailController.text, password: passwordController.text);
-      print("User loged in");
-      Navigator.pop(context);
+      if (emailController != "") {
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
+            email: emailController.text, password: passwordController.text);
+        print("User loged in");
+        Navigator.pop(context);
+      } else {
+        showErrorMessage("You didn't provide credentials");
+      }
     } on FirebaseAuthException catch (e) {
       print('Failed with error code: ${e.code}');
       Navigator.pop(context);
@@ -179,16 +184,22 @@ class _LoginPageState extends State<LoginPage> {
                     const SizedBox(height: 20),
 
                     //google + apple
-                    const Row(
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         //google
-                        SquareTile(imagePath: "assets/google.png"),
+                        SquareTile(
+                          imagePath: "assets/google.png",
+                          onTap: () => AuthServices().signInWithGoogle,
+                        ),
 
                         SizedBox(width: 10),
 
                         //apple
-                        SquareTile(imagePath: "assets/apple.png"),
+                        SquareTile(
+                          imagePath: "assets/apple.png",
+                          onTap: () {},
+                        ),
                       ],
                     ),
 

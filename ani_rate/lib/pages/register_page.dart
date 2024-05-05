@@ -1,6 +1,7 @@
 import 'package:ani_rate/components/my_button.dart';
 import 'package:ani_rate/components/my_textfield.dart';
 import 'package:ani_rate/components/square_tile.dart';
+import 'package:ani_rate/services/auth_services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -181,16 +182,22 @@ class _RegisterPageState extends State<RegisterPage> {
                     const SizedBox(height: 20),
 
                     //google + apple
-                    const Row(
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         //google
-                        SquareTile(imagePath: "assets/google.png"),
+                        SquareTile(
+                          imagePath: "assets/google.png",
+                          onTap: () => AuthServices().signInWithGoogle(),
+                        ),
 
                         SizedBox(width: 10),
 
                         //apple
-                        SquareTile(imagePath: "assets/apple.png"),
+                        SquareTile(
+                          imagePath: "assets/apple.png",
+                          onTap: () {},
+                        ),
                       ],
                     ),
 
