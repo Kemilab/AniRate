@@ -82,7 +82,7 @@ class _LoginPageState extends State<LoginPage> {
           decoration: const BoxDecoration(
               image: DecorationImage(
                   image: AssetImage("assets/background.png"),
-                  fit: BoxFit.cover,
+                  fit: BoxFit.none,
                   colorFilter: ColorFilter.mode(
                       Color.fromARGB(104, 0, 0, 0), BlendMode.overlay))),
           child: SizedBox(
