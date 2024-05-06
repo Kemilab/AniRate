@@ -190,7 +190,7 @@ class _LoginPageState extends State<LoginPage> {
                         //google
                         SquareTile(
                           imagePath: "assets/google.png",
-                          onTap: () => AuthServices().signInWithGoogle,
+                          onTap: () => AuthServices().signInWithGoogle(),
                         ),
 
                         SizedBox(width: 10),
@@ -209,16 +209,16 @@ class _LoginPageState extends State<LoginPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
+                        const Text(
                           "Not a member?",
                           style: TextStyle(
                               color: Color.fromARGB(255, 245, 118, 14),
                               fontWeight: FontWeight.bold),
                         ),
-                        SizedBox(width: 4),
+                      const  SizedBox(width: 4),
                         GestureDetector(
                           onTap: widget.onTap,
-                          child: Text(
+                          child: const Text(
                             "Register now",
                             style: TextStyle(
                                 color: Colors.blue,

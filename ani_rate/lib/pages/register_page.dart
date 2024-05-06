@@ -55,12 +55,12 @@ class _RegisterPageState extends State<RegisterPage> {
     showDialog(
       context: context,
       builder: (context) {
-        return AlertDialog(
+        return const AlertDialog(
           backgroundColor: Color.fromARGB(255, 161, 22, 22),
           title: Center(
             child: Text(
               "Check your credentials",
-              style: const TextStyle(color: Colors.white),
+              style: TextStyle(color: Colors.white),
             ),
           ),
         );
@@ -191,7 +191,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           onTap: () => AuthServices().signInWithGoogle(),
                         ),
 
-                        SizedBox(width: 10),
+                        const SizedBox(width: 10),
 
                         //apple
                         SquareTile(
