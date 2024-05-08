@@ -41,7 +41,7 @@ class _RegisterPageState extends State<RegisterPage> {
         //show error message, password don't match
         showErrorMessage("Passwords don't match!");
       }
-      print("User loged in");
+      print("User logged in");
       Navigator.pop(context); // pop the navigation circle
     } on FirebaseAuthException catch (e) {
       print('Failed with error code: ${e.code}');
