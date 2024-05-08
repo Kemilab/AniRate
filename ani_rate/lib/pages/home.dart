@@ -60,36 +60,30 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
                 height: 15,
               ),
               Container(
-                  height: 200,
+                  height: 250,
                   child: ListView.separated(
                     itemCount: categories.length,
                     scrollDirection: Axis.horizontal,
                     padding: EdgeInsets.only(left: 20, right: 20),
                     separatorBuilder: (context, index) => SizedBox(
-                      width: 25,
+                      width: 5,
                     ),
                     itemBuilder: (context, index) {
                       return Container(
-                          width: 110,
-                          decoration: BoxDecoration(
-                            color: categories[index].boxColor.withOpacity(0.3),
-                          ),
+                          width: 166,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Container(
-                                width: 120,
-                                height: 150,
-                                decoration: BoxDecoration(),
-                                child: Image.asset(categories[index].coverPath),
-                              ),
-                              Text(
-                                categories[index].name,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.orange,
+                              ClipRRect( // Wrap the image with ClipRRect
+                                borderRadius: BorderRadius.circular(10.0),
+                                child: Image.asset(
+                                  categories[index].coverPath,
+                                  width: 200, // Adjust width if needed
+                                  height: 250, // Adjust height if needed
+                                  fit: BoxFit.cover,
                                 ),
-                              )
+                                 
+                              ),
                             ],
                           ));
                     },
