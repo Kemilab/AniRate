@@ -46,7 +46,23 @@ class _RegisterPageState extends State<RegisterPage> {
     } on FirebaseAuthException catch (e) {
       print('Failed with error code: ${e.code}');
       Navigator.pop(context);
-      showErrorMessage(e.code);
+      switch (e.code) {
+        case "invalid-email":
+          showErrorMessage("Your email address appears to be malformed");
+          break;
+        case "invalid-credential":
+          showErrorMessage("Your email or password is wrong");
+          break;
+        case "weak-password":
+          showErrorMessage("Your password should be at least 6 characters");
+          break;
+        case "email-already-in-use":
+          showErrorMessage(
+              "The email address is already in use by another account");
+          break;
+        default:
+          showErrorMessage("Provide your credentials");
+      }
     }
   }
 
@@ -55,12 +71,13 @@ class _RegisterPageState extends State<RegisterPage> {
     showDialog(
       context: context,
       builder: (context) {
-        return const AlertDialog(
-          backgroundColor: Color.fromARGB(255, 161, 22, 22),
+        return AlertDialog(
+          backgroundColor: const Color.fromARGB(255, 161, 22, 22),
           title: Center(
             child: Text(
-              "Check your credentials",
-              style: TextStyle(color: Colors.white),
+              textAlign: TextAlign.center,
+              message,
+              style: const TextStyle(color: Colors.white),
             ),
           ),
         );

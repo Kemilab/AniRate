@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ProfilePage extends StatefulWidget {
-  ProfilePage({super.key});
+  const ProfilePage({super.key});
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -55,7 +55,7 @@ class _ProfilePageState extends State<ProfilePage> {
             child: ListView(
               children: [
                 Container(
-                  height: 70,
+                  height: 80,
                   decoration: BoxDecoration(
                       color: const Color.fromARGB(176, 63, 61, 61),
                       borderRadius: BorderRadius.circular(8)),
@@ -64,8 +64,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   child: Row(
                     children: [
                       Container(
-                        width: 20,
-                        height: 20,
+                        width: 30,
+                        height: 30,
                         decoration: const BoxDecoration(
                             shape: BoxShape.circle,
                             image: DecorationImage(
@@ -80,7 +80,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           textAlign: TextAlign.center,
                           style: GoogleFonts.poppins(
                               textStyle: const TextStyle(
-                            color: Color.fromARGB(255, 82, 81, 81),
+                            color: Color.fromARGB(255, 211, 205, 205),
                             fontWeight: FontWeight.w700,
                           )),
                         ),
@@ -91,12 +91,12 @@ class _ProfilePageState extends State<ProfilePage> {
                 GestureDetector(
                   onTap: resetPassword,
                   child: Container(
-                    height: 70,
+                    height: 50,
                     decoration: BoxDecoration(
                         color: const Color.fromARGB(176, 63, 61, 61),
                         borderRadius: BorderRadius.circular(8)),
                     margin: const EdgeInsets.only(top: 10, left: 25, right: 25),
-                    padding: const EdgeInsets.all(25),
+                    padding: const EdgeInsets.all(5),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -116,19 +116,44 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
                 GestureDetector(
-                  onTap: deleteUser,
+                  onTap: () {},
                   child: Container(
-                    height: 70,
+                    height: 50,
                     decoration: BoxDecoration(
                         color: const Color.fromARGB(176, 63, 61, 61),
                         borderRadius: BorderRadius.circular(8)),
                     margin: const EdgeInsets.only(top: 10, left: 25, right: 25),
-                    padding: const EdgeInsets.all(25),
+                    padding: const EdgeInsets.all(5),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "Remove account",
+                          "Change Launguage",
+                          style: GoogleFonts.poppins(
+                            textStyle: const TextStyle(
+                              color: Color.fromARGB(255, 8, 235, 178),
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: deleteUser,
+                  child: Container(
+                    height: 50,
+                    decoration: BoxDecoration(
+                        color: const Color.fromARGB(176, 63, 61, 61),
+                        borderRadius: BorderRadius.circular(8)),
+                    margin: const EdgeInsets.only(top: 10, left: 25, right: 25),
+                    padding: const EdgeInsets.all(5),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Remove Account",
                           style: GoogleFonts.poppins(
                             textStyle: const TextStyle(
                               color: Color.fromARGB(255, 255, 0, 0),

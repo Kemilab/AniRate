@@ -31,18 +31,29 @@ class _LoginPageState extends State<LoginPage> {
         });
     //try login
     try {
-      if (emailController != "") {
-        await FirebaseAuth.instance.signInWithEmailAndPassword(
-            email: emailController.text, password: passwordController.text);
-        print("User loged in");
-        Navigator.pop(context);
-      } else {
-        showErrorMessage("You didn't provide credentials");
-      }
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: emailController.text, password: passwordController.text);
+      Navigator.pop(context);
     } on FirebaseAuthException catch (e) {
       print('Failed with error code: ${e.code}');
       Navigator.pop(context);
-      showErrorMessage(e.code);
+      switch (e.code) {
+        case "invalid-email":
+          showErrorMessage("Your email address appears to be malformed");
+          break;
+        case "invalid-credential":
+          showErrorMessage("Your email or password is wrong");
+          break;
+        case "weak-password":
+          showErrorMessage("Your password should be at least 6 characters");
+          break;
+        case "email-already-in-use":
+          showErrorMessage(
+              "The email address is already in use by another account");
+          break;
+        default:
+          showErrorMessage("Provide your credentials");
+      }
     }
   }
 
@@ -55,7 +66,8 @@ class _LoginPageState extends State<LoginPage> {
           backgroundColor: Color.fromARGB(255, 161, 22, 22),
           title: Center(
             child: Text(
-              "Check your credentials",
+              textAlign: TextAlign.center,
+              message,
               style: const TextStyle(color: Colors.white),
             ),
           ),
@@ -215,7 +227,7 @@ class _LoginPageState extends State<LoginPage> {
                               color: Color.fromARGB(255, 245, 118, 14),
                               fontWeight: FontWeight.bold),
                         ),
-                      const  SizedBox(width: 4),
+                        const SizedBox(width: 4),
                         GestureDetector(
                           onTap: widget.onTap,
                           child: const Text(
