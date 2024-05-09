@@ -42,10 +42,14 @@ class _RegisterPageState extends State<RegisterPage> {
         showErrorMessage("Passwords don't match!");
       }
       print("User logged in");
-      Navigator.pop(context); // pop the navigation circle
+      if (mounted) {
+        Navigator.pop(context); // pop the navigation circle
+      }
     } on FirebaseAuthException catch (e) {
       print('Failed with error code: ${e.code}');
-      Navigator.pop(context);
+      if (mounted) {
+        Navigator.pop(context); // pop the navigation circle
+      }
       switch (e.code) {
         case "invalid-email":
           showErrorMessage("Your email address appears to be malformed");
@@ -62,6 +66,9 @@ class _RegisterPageState extends State<RegisterPage> {
           break;
         default:
           showErrorMessage("Provide your credentials");
+          if (mounted) {
+            Navigator.pop(context); // pop the navigation circle
+          }
       }
     }
   }

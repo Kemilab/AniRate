@@ -33,10 +33,14 @@ class _LoginPageState extends State<LoginPage> {
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: emailController.text, password: passwordController.text);
-      Navigator.pop(context);
+      if (mounted) {
+        Navigator.pop(context); // pop the navigation circle
+      }
     } on FirebaseAuthException catch (e) {
       print('Failed with error code: ${e.code}');
-      Navigator.pop(context);
+      if (mounted) {
+        Navigator.pop(context); // pop the navigation circle
+      }
       switch (e.code) {
         case "invalid-email":
           showErrorMessage("Your email address appears to be malformed");
