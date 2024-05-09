@@ -13,13 +13,6 @@ class MyHomeScreen extends StatefulWidget {
 }
 
 class _MyHomeScreenState extends State<MyHomeScreen> {
-  final user = FirebaseAuth.instance.currentUser!;
-
-  // Sign user out
-  void signUserOut() {
-    FirebaseAuth.instance.signOut();
-  }
-
   final TextEditingController searchController = TextEditingController();
 
   List<top_rating_model> topRatings = [];
@@ -164,9 +157,6 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
           ),
         ),
       ),
-      actions: [
-        IconButton(onPressed: signUserOut, icon: Icon(Icons.logout)),
-      ],
     );
   }
 }
