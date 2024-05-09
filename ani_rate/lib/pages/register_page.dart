@@ -28,7 +28,9 @@ class _RegisterPageState extends State<RegisterPage> {
         context: context,
         builder: (context) {
           return const Center(
-            child: CircularProgressIndicator(),
+            child: CircularProgressIndicator(
+              color: Color.fromARGB(255, 255, 119, 29),
+            ),
           );
         });
     //try creating the user
