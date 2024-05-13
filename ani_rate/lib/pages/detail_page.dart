@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-class DetailPage extends StatefulWidget {
+class DetailPage extends StatelessWidget {
   const DetailPage({super.key});
 
-  @override
-  State<DetailPage> createState() => _DetailPageState();
-}
 
-class _DetailPageState extends State<DetailPage> {
   @override
   Widget build(BuildContext context) {
-      return Scaffold(
+    return SingleChildScrollView(
+      child: Scaffold(
         backgroundColor: Color.fromRGBO(35, 35, 35, 1),
         body: Stack(
           children: [
@@ -26,6 +23,7 @@ class _DetailPageState extends State<DetailPage> {
             ),
           ],
         ),
-      );
+      ),
+    );
   }
 }
