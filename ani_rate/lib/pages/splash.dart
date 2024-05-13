@@ -34,7 +34,7 @@ class SplashScreen extends StatelessWidget {
       splashIconSize: 350,
       duration: 1000,
       nextScreen: AuthPage(),
-      //splashTransition: SplashTransition.scaleTransition,
+      splashTransition: SplashTransition.scaleTransition,
       pageTransitionType: PageTransitionType.leftToRightWithFade,
       animationDuration: const Duration(milliseconds: 1000),
       backgroundColor: Color.fromRGBO(35, 35, 35, 1),
