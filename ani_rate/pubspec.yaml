@@ -42,7 +42,6 @@ dependencies:
   firebase_auth: ^4.19.3
   google_sign_in: ^6.2.1
   google_fonts: ^6.2.1
-  flutter_localization: ^0.2.0
 
 dev_dependencies:
   flutter_test:

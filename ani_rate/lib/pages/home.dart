@@ -1,5 +1,6 @@
 import 'package:ani_rate/models/spotlight_model.dart';
 import 'package:ani_rate/models/topRating_model.dart';
+import 'package:ani_rate/pages/detail_page.dart';
 import 'package:ani_rate/pages/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -73,36 +74,44 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
                       height: 15,
                     ),
                     Container(
-                        height: 250,
-                        child: ListView.separated(
-                          itemCount: topRatings.length,
-                          scrollDirection: Axis.horizontal,
-                          padding: EdgeInsets.only(left: 20, right: 20),
-                          separatorBuilder: (context, index) => SizedBox(
-                            width: 5,
-                          ),
-                          itemBuilder: (context, index) {
-                            return Container(
-                                width: 166,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    ClipRRect(
-                                      // Wrap the image with ClipRRect
-                                      borderRadius: BorderRadius.circular(10.0),
-                                      child: Image.asset(
-                                        topRatings[index].coverPath,
-                                        width: 200, // Adjust width if needed
-                                        height: 250, // Adjust height if needed
-                                        fit: BoxFit.cover,
-                                      ),
+                      height: 250,
+                      child: ListView.builder(
+                        itemCount: topRatings.length,
+                        scrollDirection: Axis.horizontal,
+                        padding: EdgeInsets.only(left: 20, right: 20),
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => DetailPage(), // Replace 'DetailPage()' with the desired page/widget
+                                ),
+                              );
+                            },
+                            child: Container(
+                              width: 166,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    child: Image.asset(
+                                      topRatings[index].coverPath,
+                                      width: 200,
+                                      height: 250,
+                                      fit: BoxFit.cover,
                                     ),
-                                  ],
-                                ));
-                          },
-                        ))
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
                   ],
-                )
+                ),
               ],
             ),
           ],
