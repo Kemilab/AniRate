@@ -1,7 +1,6 @@
 import 'package:ani_rate/models/spotlight_model.dart';
 import 'package:ani_rate/models/topRating_model.dart';
 import 'package:ani_rate/pages/profile_page.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
