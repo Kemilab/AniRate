@@ -16,11 +16,11 @@ class MyHomeScreen extends StatefulWidget {
 class _MyHomeScreenState extends State<MyHomeScreen> {
   final TextEditingController searchController = TextEditingController();
 
-  List<top_rating_model> topRatings = [];
+  List<TopRatingModel> topRatings = [];
   List<SpotlightModel> spotlights = [];
 
   void _getTopRatings() {
-    topRatings = top_rating_model.getTopRatings();
+    topRatings = TopRatingModel.getTopRatings();
   }
 
   void _getSpotlights() {

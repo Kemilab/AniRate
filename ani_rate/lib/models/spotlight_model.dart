@@ -13,11 +13,6 @@ class SpotlightModel{
         spotlightPath: 'assets/aot_spotlight.svg',)
     );
 
-    spotlights.add(
-      SpotlightModel(
-        spotlightPath: 'assets/',)
-    );
-
     return spotlights;
   }
 }

@@ -1,30 +1,30 @@
-class top_rating_model{
+class TopRatingModel{
   String coverPath;
 
-  top_rating_model({
+  TopRatingModel({
     required this.coverPath,
   });
 
- static  List<top_rating_model> getTopRatings(){
-    List<top_rating_model> topRatings = [];
+ static  List<TopRatingModel> getTopRatings(){
+    List<TopRatingModel> topRatings = [];
 
     topRatings.add(
-      top_rating_model(
+      TopRatingModel(
         coverPath: 'assets/onepiece_main_cover.png',)
     );
 
     topRatings.add(
-      top_rating_model(
+      TopRatingModel(
         coverPath: 'assets/attackontitan_main_cover.png',)
     );
 
     topRatings.add(
-      top_rating_model(
+      TopRatingModel(
         coverPath: 'assets/mha_main_cover.png',)
     );
 
     topRatings.add(
-      top_rating_model(
+      TopRatingModel(
         coverPath: 'assets/jujutsukaisen_main_cover.png',)
     );
 
