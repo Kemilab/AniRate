@@ -37,86 +37,86 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
   Widget build(BuildContext context) {
     _getTopRatings();
     _getSpotlights();
-    return SingleChildScrollView(
-      child: Scaffold(
-        backgroundColor: Color.fromRGBO(35, 35, 35, 1),
-        appBar: appBar(),
-        body: Stack(
-          children: [
-            Positioned(
-              top: 0.0, // Top position set to 0.0
-              left: 0.0, // Left position set to 0.0
-              right: 0.0, // Right position set to 0.0 (stretch to full width)
-              height: 200.0, // Adjust height as needed
-              child: SvgPicture.asset(
-                'assets/aot_spotlight.svg',
-                fit: BoxFit.cover,
+    return Scaffold(
+      backgroundColor: Color.fromRGBO(35, 35, 35, 1),
+      appBar: appBar(),
+      body: Stack(
+        children: [
+          Positioned(
+            top: 0.0, // Top position set to 0.0
+            left: 0.0, // Left position set to 0.0
+            right: 0.0, // Right position set to 0.0 (stretch to full width)
+            height: 200.0, // Adjust height as needed
+            child: SvgPicture.asset(
+              'assets/aot_spotlight.svg',
+              fit: BoxFit.cover,
+            ),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: 250,
               ),
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  height: 250,
-                ),
-                Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 20),
-                      child: Text(
-                        'Top ratings',
-                        style: TextStyle(
-                            color: Color.fromARGB(255, 255, 119, 29),
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600),
-                      ),
+              Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20),
+                    child: Text(
+                      'Top ratings',
+                      style: TextStyle(
+                          color: Color.fromARGB(255, 255, 119, 29),
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600),
                     ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    Container(
-                      height: 250,
-                      child: ListView.builder(
-                        itemCount: topRatings.length,
-                        scrollDirection: Axis.horizontal,
-                        padding: EdgeInsets.only(left: 20, right: 20),
-                        itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => DetailPage(), // Replace 'DetailPage()' with the desired page/widget
-                                ),
-                              );
-                            },
-                            child: Container(
-                              width: 166,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    child: Image.asset(
-                                      topRatings[index].coverPath,
-                                      width: 200,
-                                      height: 250,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                ],
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Container(
+                    height: 250,
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: topRatings.length,
+                      scrollDirection: Axis.horizontal,
+                      padding: EdgeInsets.only(left: 20, right: 20),
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    DetailPage(), // Replace 'DetailPage()' with the desired page/widget
                               ),
+                            );
+                          },
+                          child: Container(
+                            width: 166,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  child: Image.asset(
+                                    topRatings[index].coverPath,
+                                    width: 200,
+                                    height: 250,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ],
                             ),
-                          );
-                        },
-                      ),
+                          ),
+                        );
+                      },
                     ),
-                  ],
-                ),
-              ],
-            ),
-          ],
-        ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
