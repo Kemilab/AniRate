@@ -2,6 +2,8 @@ import 'package:ani_rate/components/my_button.dart';
 import 'package:ani_rate/components/my_textfield.dart';
 import 'package:ani_rate/components/square_tile.dart';
 import 'package:ani_rate/services/auth_services.dart';
+import 'package:ani_rate/translations/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -162,7 +164,7 @@ class _LoginPageState extends State<LoginPage> {
 
                     //signin
                     MyButton(
-                      text: "Log In",
+                      text: LocaleKeys.login.tr(),
                       onTap: signUserIn,
                     ),
 
