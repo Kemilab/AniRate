@@ -1,6 +1,6 @@
 import 'package:ani_rate/models/spotlight_model.dart';
 import 'package:ani_rate/models/topRating_model.dart';
-import 'package:ani_rate/pages/detail_page.dart';
+import 'package:ani_rate/pages/animePages/onepiece_page.dart';
 import 'package:ani_rate/pages/profile_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -87,7 +87,7 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) =>
-                                    DetailPage(), // Replace 'DetailPage()' with the desired page/widget
+                                    OnePiecePage(anime:null), // Replace 'DetailPage()' with the desired page/widget
                               ),
                             );
                           },
