@@ -47,8 +47,8 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
             left: 0.0, // Left position set to 0.0
             right: 0.0, // Right position set to 0.0 (stretch to full width)
             height: 200.0, // Adjust height as needed
-            child: SvgPicture.asset(
-              'assets/aot_spotlight.svg',
+            child: Image.asset(
+              'assets/onepiece_spotlight.png',
               fit: BoxFit.cover,
             ),
           ),
