@@ -1,4 +1,3 @@
-import 'package:ani_rate/models/Anime.dart';
 import 'package:ani_rate/models/spotlight_model.dart';
 import 'package:ani_rate/models/topRating_model.dart';
 import 'package:ani_rate/pages/animePage.dart';
@@ -7,9 +6,7 @@ import 'package:ani_rate/pages/animePages/jk_page.dart';
 import 'package:ani_rate/pages/animePages/mha_page.dart';
 import 'package:ani_rate/pages/animePages/onepiece_page.dart';
 import 'package:ani_rate/pages/profile_page.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class MyHomeScreen extends StatefulWidget {
   MyHomeScreen({super.key});
@@ -46,6 +43,7 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
 
   @override
   void initState() {
+    super.initState();
     _getTopRatings();
     _getSpotlights();
     _getAnimeList();
