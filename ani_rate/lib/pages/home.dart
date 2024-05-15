@@ -24,12 +24,19 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
   List<Anime> displayedAnimeList = [];
 
   void filterAnimeByName(String query) {
+  if (query.isEmpty) {
+    setState(() {
+      displayedAnimeList = allAnimeList;
+    });
+  } else {
     List<Anime> filteredList = allAnimeList.where((anime) =>
         anime.title.toLowerCase().contains(query.toLowerCase())).toList();
     setState(() {
       displayedAnimeList = filteredList;
     });
   }
+}
+
 
   void _getAnimeList() {
     animeList = [
@@ -54,89 +61,91 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
     return Scaffold(
       backgroundColor: Color.fromRGBO(35, 35, 35, 1),
       appBar: appBar(),
-      body: Stack(
-        children: [
-          Positioned(
-            top: 0.0,
-            left: 0.0,
-            right: 0.0,
-            height: 200.0,
-            child: Image.asset(
-              'assets/title.png',
-              fit: BoxFit.cover,
+      body: SingleChildScrollView(
+        child: Stack(
+          children: [
+            Positioned(
+              top: 0.0,
+              left: 0.0,
+              right: 0.0,
+              height: 200.0,
+              child: Image.asset(
+                'assets/title.png',
+                fit: BoxFit.cover,
+              ),
             ),
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: 225),
-              Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20),
-                    child: Text(
-                      'Top ratings',
-                      style: TextStyle(
-                        color: Color.fromARGB(255, 255, 119, 29),
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 225),
+                Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: Text(
+                        'Top ratings',
+                        style: TextStyle(
+                          color: Color.fromARGB(255, 255, 119, 29),
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
-                  ),
-                  SizedBox(height: 15),
-                  Container(
-                    height: 250,
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: displayedAnimeList.length,
-                      scrollDirection: Axis.horizontal,
-                      padding: EdgeInsets.only(left: 20, right: 20),
-                      itemBuilder: (context, index) {
-                        Anime anime = displayedAnimeList[index];
-                        return GestureDetector(
-                          onTap: () {
-                            _navigateToAnimePage(context, anime);
-                          },
-                          child: Container(
-                            width: 166,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: Image.asset(
-                                    anime.imagePath,
-                                    width: 200,
-                                    height: 250,
-                                    fit: BoxFit.cover,
+                    SizedBox(height: 15),
+                    Container(
+                      height: 250,
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: displayedAnimeList.length,
+                        scrollDirection: Axis.horizontal,
+                        padding: EdgeInsets.only(left: 20, right: 20),
+                        itemBuilder: (context, index) {
+                          Anime anime = displayedAnimeList[index];
+                          return GestureDetector(
+                            onTap: () {
+                              _navigateToAnimePage(context, anime);
+                            },
+                            child: Container(
+                              width: 166,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: Image.asset(
+                                      anime.imagePath,
+                                      width: 200,
+                                      height: 250,
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                        );
-                      },
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 20,),
+                Padding(
+                  padding: const EdgeInsets.only(left: 10.0),
+                  child: Text(
+                    'TAGS',
+                    style: TextStyle(
+                      color: Color.fromRGBO(255, 255, 255, 0.72),
+                      fontSize: 19.0,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
-                ],
-              ),
-              SizedBox(height: 20,),
-              Padding(
-                padding: const EdgeInsets.only(left: 10.0),
-                child: Text(
-                  'TAGS',
-                  style: TextStyle(
-                    color: Color.fromRGBO(255, 255, 255, 0.72),
-                    fontSize: 19.0,
-                    fontWeight: FontWeight.w500,
-                  ),
                 ),
-              ),
-              SizedBox(height: 20,),
-              tags(context),
-            ],
-          ),
-        ],
+                SizedBox(height: 20,),
+                tags(context),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
