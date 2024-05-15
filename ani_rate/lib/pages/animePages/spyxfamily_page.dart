@@ -3,17 +3,17 @@ import 'package:ani_rate/pages/animePage.dart';
 import 'package:flutter/material.dart';
 import 'package:expandable_text/expandable_text.dart';
 
-class JKPage extends StatefulWidget {
+class SXFPage extends StatefulWidget {
   final Anime? anime;
 
-  const JKPage({Key? key, this.anime}) : super(key: key);
+  const SXFPage({Key? key, this.anime}) : super(key: key);
 
   @override
-  State<JKPage> createState() => _JKPageState();
+  State<SXFPage> createState() => _SXFPageState();
 }
 
 
-class _JKPageState extends State<JKPage> {
+class _SXFPageState extends State<SXFPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,14 +24,14 @@ class _JKPageState extends State<JKPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Image.asset(
-                'assets/jk_spotlight.jpg',
+                'assets/spyxfamily_spotlight.jpg',
                 fit: BoxFit.cover,
               ),
               const SizedBox(height: 20.0),
               const Padding(
                 padding: EdgeInsets.only(left: 20.0),
                 child: Text(
-                  'Jujutsu Kaisen',
+                  'Spy x Family',
                   style: TextStyle(
                     color: Color.fromARGB(255, 255, 119, 29),
                     fontSize: 40.0,
@@ -45,7 +45,7 @@ class _JKPageState extends State<JKPage> {
                   right: 20.0,
                 ),
                 child: Text(
-                  'Gege Akutami',
+                  'Tatsuya Endo',
                   style: TextStyle(
                     color: Color.fromARGB(197, 255, 119, 29),
                     fontSize: 18.0,
@@ -93,6 +93,7 @@ class _JKPageState extends State<JKPage> {
               ),
               SizedBox(height: 20,),
               tags(context),
+              SizedBox(height: 20),
             ],
           ),
         ),
@@ -105,34 +106,27 @@ class _JKPageState extends State<JKPage> {
       spacing: 10,
       children: [
         TagWidget(text: 'Action', color: Color.fromARGB(154, 252, 76, 6), onTap: () {
-          // Navigate to page displaying anime with 'Action' tag
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) =>  AnimePage(tag: 'Action')),
+            MaterialPageRoute(builder: (context) =>  const AnimePage(tag: 'Action')),
           );
         }),
-        TagWidget(text: 'Shounen', color: Color.fromARGB(154, 252, 6, 6), onTap: () {
+        TagWidget(text: 'Family', color: Color.fromARGB(154, 252, 6, 6), onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const AnimePage(tag: 'Shounen')),
+            MaterialPageRoute(builder: (context) => const AnimePage(tag: 'Family')),
           );
         }),
-        TagWidget(text: 'Supernatural', color: Color.fromARGB(154, 252, 207, 6), onTap: () {
+        TagWidget(text: 'Comedy', color: Color.fromARGB(154, 252, 6, 6), onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const AnimePage(tag: 'Supernatural')),
+            MaterialPageRoute(builder: (context) => const AnimePage(tag: 'Comedy')),
           );
         }),
-        TagWidget(text: 'Magic', color: Color.fromARGB(154, 252, 76, 6), onTap: () {
+        TagWidget(text: 'Spy', color: Color.fromARGB(154, 252, 6, 6), onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const AnimePage(tag: 'Magic')),
-          );
-        }),
-        TagWidget(text: 'War', color: Color.fromARGB(154, 252, 207, 6), onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const AnimePage(tag: 'War')),
+            MaterialPageRoute(builder: (context) => const AnimePage(tag: 'Spy')),
           );
         }),
       ],
@@ -142,13 +136,13 @@ class _JKPageState extends State<JKPage> {
 class TagWidget extends StatelessWidget {
   final String text;
   final Color color;
-  final VoidCallback onTap; // Add onTap callback
+  final VoidCallback onTap;
 
   const TagWidget({
     Key? key,
     required this.text,
     required this.color,
-    required this.onTap, // Receive onTap callback
+    required this.onTap,
   }) : super(key: key);
 
   @override
@@ -223,7 +217,7 @@ class TagWidget extends StatelessWidget {
                 Container(
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
                     child: const Text(
-                      '25 minutes per episode',
+                      '22 minutes per episode',
                       style: TextStyle(
                         fontSize: 15.0,
                         color: Color.fromRGBO(255, 255, 255, 1),
@@ -255,7 +249,7 @@ class TagWidget extends StatelessWidget {
                 Container(
                     padding: const EdgeInsets.symmetric(horizontal: 5.0),
                     child: const Text(
-                      '3.10.2020. - 28.12.2023.',
+                      '9.4.2022. - ?',
                       style: TextStyle(
                         fontSize: 15.0,
                         color: Color.fromRGBO(255, 255, 255, 1),
@@ -281,7 +275,7 @@ class TagWidget extends StatelessWidget {
                 Container(
                     padding: const EdgeInsets.symmetric(horizontal: 10.0),
                     child: const Text(
-                      'Jujutsu Kaisen',
+                      'Supai Famirī',
                       style: TextStyle(
                         fontSize: 15.0,
                         color: Color.fromRGBO(255, 255, 255, 1),
@@ -317,10 +311,10 @@ class TagWidget extends StatelessWidget {
     return const Padding(
               padding: EdgeInsets.only(left: 10.0, right: 10.0),
               child: ExpandableText(
-                "The story follows high school student Yuji Itadori as he joins a secret organization of Jujutsu Sorcerers in order to kill a powerful Curse named Ryomen Sukuna, to whom Yuji becomes the host.",
+                'The story follows a spy who has to "build a family" to execute a mission, not realizing that his adopted daughter is a telepath, and the woman he agrees to marry is a skilled assassin.',
                 expandText: 'Show more',
                 collapseText: ' Show less',
-                maxLines: 4,
+                maxLines: 3,
                 linkEllipsis: true,
                 style: TextStyle(
                   color: Color.fromRGBO(255, 255, 255, 1),
@@ -357,7 +351,7 @@ Wrap(
   Container(
       padding: const EdgeInsets.symmetric(horizontal: 10.0),
       child: Text(
-        'MAPPA STUDIOS',
+        'WIT STUDIO CLOVERWORKS',
         style: TextStyle(
           fontSize: 15.0,
           color: Color.fromARGB(255, 252, 75, 6),
@@ -382,7 +376,7 @@ Wrap(
   Container(
       padding: const EdgeInsets.symmetric(horizontal: 10.0),
       child: Text(
-        '★ ★ ★ ★ ★',
+        '★★★★★',
         style: TextStyle(
           fontSize: 15.0,
           color: Color.fromARGB(255, 252, 75, 6),
@@ -407,7 +401,7 @@ Wrap(
   Container(
       padding: const EdgeInsets.symmetric(horizontal: 10.0),
       child: Text(
-        '47',
+        '37 (Airing)',
         style: TextStyle(
           fontSize: 15.0,
           color: Color.fromARGB(255, 252, 75, 6),

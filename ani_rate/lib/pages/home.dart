@@ -1,11 +1,11 @@
-import 'package:ani_rate/models/spotlight_model.dart';
-import 'package:ani_rate/models/topRating_model.dart';
 import 'package:ani_rate/pages/animePage.dart';
 import 'package:ani_rate/pages/animePages/aot_page.dart';
+import 'package:ani_rate/pages/animePages/demonslayer_page.dart';
 import 'package:ani_rate/pages/animePages/dragonball_page.dart';
 import 'package:ani_rate/pages/animePages/jk_page.dart';
 import 'package:ani_rate/pages/animePages/mha_page.dart';
 import 'package:ani_rate/pages/animePages/onepiece_page.dart';
+import 'package:ani_rate/pages/animePages/spyxfamily_page.dart';
 import 'package:ani_rate/pages/profile_page.dart';
 import 'package:flutter/material.dart';
 
@@ -24,20 +24,12 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
   List<Anime> displayedAnimeList = [];
 
   void filterAnimeByName(String query) {
-  if (query.isEmpty) {
-    setState(() {
-      displayedAnimeList = allAnimeList;
-    });
-  } else {
-    List<Anime> filteredList = allAnimeList.where((anime) =>
-        anime.title.toLowerCase().contains(query.toLowerCase())).toList();
-    setState(() {
-      displayedAnimeList = filteredList;
-    });
-  }
+  List<Anime> filteredList = allAnimeList.where((anime) =>
+    anime.title.toLowerCase().contains(query.toLowerCase())).toList();
+  setState(() {
+    displayedAnimeList = filteredList;
+  });
 }
-
-
   void _getAnimeList() {
     animeList = [
       Anime(title: 'One Piece', imagePath: 'assets/onepiece_main_cover.png'),
@@ -45,6 +37,8 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
       Anime(title: 'My hero academia', imagePath: 'assets/mha_main_cover.png'),
       Anime(title: 'Jujutsu Kaisen', imagePath: 'assets/jujutsukaisen_main_cover.png'),
       Anime(title: 'Dragon Ball', imagePath: 'assets/dragonball_main_cover.png'),
+      Anime(title: 'Demon Slayer', imagePath: 'assets/demonslayer_main_cover.jpg'),
+      Anime(title: 'Spy x Family', imagePath: 'assets/spyxfamily_main_cover.jpg'),
     ];
     allAnimeList.addAll(animeList); // Store all anime in a separate list
   }
@@ -83,7 +77,7 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
                     Padding(
                       padding: const EdgeInsets.only(left: 20),
                       child: Text(
-                        'Top ratings',
+                        'All anime',
                         style: TextStyle(
                           color: Color.fromARGB(255, 255, 119, 29),
                           fontSize: 18,
@@ -93,39 +87,41 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
                     ),
                     SizedBox(height: 15),
                     Container(
-                      height: 250,
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: displayedAnimeList.length,
-                        scrollDirection: Axis.horizontal,
-                        padding: EdgeInsets.only(left: 20, right: 20),
-                        itemBuilder: (context, index) {
-                          Anime anime = displayedAnimeList[index];
-                          return GestureDetector(
-                            onTap: () {
-                              _navigateToAnimePage(context, anime);
-                            },
-                            child: Container(
-                              width: 166,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(10),
-                                    child: Image.asset(
-                                      anime.imagePath,
-                                      width: 200,
-                                      height: 250,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
+  height: 300, // Increase the height of the container
+  child: GridView.builder(
+    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+      crossAxisCount: 2, // Maximum 2 items per row
+      crossAxisSpacing: 8.0, // Spacing between items
+      mainAxisSpacing: 8.0, // Spacing between rows
+    ),
+    itemCount: displayedAnimeList.length,
+    padding: EdgeInsets.all(.0),
+    itemBuilder: (context, index) {
+      Anime anime = displayedAnimeList[index];
+      return GestureDetector(
+        onTap: () {
+          _navigateToAnimePage(context, anime);
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: Image.asset(
+              anime.imagePath,
+              width: double.infinity,
+              height: double.infinity, // Allow the image to take up the entire container height
+              fit: BoxFit.cover, // Ensure images are scaled properly
+            ),
+          ),
+        ),
+      );
+    },
+  ),
+),
+
+
                   ],
                 ),
                 SizedBox(height: 20,),
@@ -153,28 +149,31 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
   AppBar appBar() {
     return AppBar(
       title: TextField(
-        controller: searchController,
-        onChanged: (query) {
-          filterAnimeByName(query); // Call filterAnimeByName method when text changes
-        },
-        decoration: InputDecoration(
-          hintText: 'Search anime...',
-          hintStyle: const TextStyle(color: Color.fromARGB(255, 255, 119, 29)),
-          prefixIcon: const Icon(Icons.search),
-          enabledBorder: UnderlineInputBorder(
-            borderRadius: BorderRadius.circular(10.0),
-            borderSide: const BorderSide(
-              color: Color.fromARGB(255, 255, 119, 29),
-            ),
-          ),
-          focusedBorder: UnderlineInputBorder(
-            borderRadius: BorderRadius.circular(10.0),
-            borderSide: const BorderSide(
-              color: Colors.blue,
-            ),
-          ),
-        ),
+  controller: searchController,
+  onChanged: (query) {
+    // Call a method to filter anime based on the search query
+    filterAnimeByName(query);
+  },
+  style: TextStyle(color: Color.fromARGB(255, 255, 119, 29),), // Change text color here
+  decoration: InputDecoration(
+    hintText: 'Search anime...',
+    hintStyle: const TextStyle(color: Color.fromARGB(255, 255, 119, 29),),
+    prefixIcon: const Icon(Icons.search),
+    enabledBorder: UnderlineInputBorder(
+      borderRadius: BorderRadius.circular(10.0),
+      borderSide: const BorderSide(
+        color: Color.fromARGB(255, 255, 119, 29),
       ),
+    ),
+    focusedBorder: UnderlineInputBorder(
+      borderRadius: BorderRadius.circular(10.0),
+      borderSide: const BorderSide(
+        color: Colors.blue,
+      ),
+    ),
+  ),
+),
+
       backgroundColor: Color.fromRGBO(35, 35, 35, 1),
       leading: Container(
         margin: EdgeInsets.all(10),
@@ -234,6 +233,18 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
         MaterialPageRoute(builder: (context) => const DGPage(anime: null)),
       );
     }
+    else if (anime.title == 'Demon Slayer') {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const DSPage(anime: null)),
+      );
+    }
+    else if (anime.title == 'Spy x Family') {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const SXFPage(anime: null)),
+      );
+    }
   }
 }
 
@@ -251,7 +262,13 @@ Widget tags(BuildContext context) {
       TagWidget(text: 'Action', color: Color.fromARGB(154, 252, 76, 6), onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) =>  AnimePage(tag: 'Action')),
+          MaterialPageRoute(builder: (context) =>  const AnimePage(tag: 'Action')),
+        );
+      }),
+      TagWidget(text: 'Adventure', color: Color.fromARGB(154, 252, 76, 6), onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) =>  const AnimePage(tag: 'Action')),
         );
       }),
       TagWidget(text: 'Shounen', color: Color.fromARGB(154, 252, 6, 6), onTap: () {
@@ -294,6 +311,18 @@ Widget tags(BuildContext context) {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const AnimePage(tag: 'Magic')),
+        );
+      }),
+      TagWidget(text: 'Family', color: Color.fromARGB(255, 156, 46, 3), onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const AnimePage(tag: 'Family')),
+        );
+      }),
+      TagWidget(text: 'Spy', color: Color.fromARGB(255, 156, 46, 3), onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const AnimePage(tag: 'Spy')),
         );
       }),
     ],

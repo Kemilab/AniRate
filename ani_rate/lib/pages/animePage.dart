@@ -1,9 +1,10 @@
-// Import necessary packages and detail pages
 import 'package:ani_rate/pages/animePages/aot_page.dart';
+import 'package:ani_rate/pages/animePages/demonslayer_page.dart';
 import 'package:ani_rate/pages/animePages/dragonball_page.dart';
 import 'package:ani_rate/pages/animePages/jk_page.dart';
 import 'package:ani_rate/pages/animePages/mha_page.dart';
 import 'package:ani_rate/pages/animePages/onepiece_page.dart';
+import 'package:ani_rate/pages/animePages/spyxfamily_page.dart';
 import 'package:flutter/material.dart';
 import 'package:ani_rate/models/Anime.dart';
 
@@ -27,51 +28,63 @@ class AnimePage extends StatelessWidget {
         context,
         MaterialPageRoute(builder: (context) => OnePiecePage(anime:anime)),
       );
-    } else {
-      if (anime.title == 'Attack on Titan') {
+    } else if (anime.title == 'Attack on Titan')
+       {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => AOTPage(anime:anime)),
       );
     }
-    if (anime.title == 'My hero academia') {
+    else if (anime.title == 'My hero academia') {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => MHAPage(anime:anime)),
       );
     }
-    if (anime.title == 'Jujutsu Kaisen') {
+    else if (anime.title == 'Jujutsu Kaisen') {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => JKPage(anime:anime)),
       );
     }
-    if (anime.title == 'Dragon Ball') {
+    else if (anime.title == 'Dragon Ball') {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => DGPage(anime:anime)),
       );
     }
+    else if (anime.title == 'Demon Slayer') {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => DSPage(anime:anime)),
+      );
     }
+    else if (anime.title == 'Spy x Family') {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => SXFPage(anime:anime)),
+      );
+    }
+    
   }
 @override
 Widget build(BuildContext context) {
   List<Anime> filteredAnime = filterAnimeByTag(tag);
   return Scaffold(
     appBar: AppBar(
-      title: Text('$tag Anime', style: TextStyle(color: Color.fromARGB(255, 255, 119, 29)),),
-      backgroundColor: Color.fromRGBO(35, 35, 35, 1),
-      iconTheme: IconThemeData(color: Color.fromARGB(255, 255, 119, 29)),
+      title: Text('$tag Anime', style: const TextStyle(color: Color.fromARGB(255, 255, 119, 29)),),
+      backgroundColor: const Color.fromRGBO(35, 35, 35, 1),
+      iconTheme: const IconThemeData(color: Color.fromARGB(255, 255, 119, 29)),
     ),
     body: Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: Color.fromRGBO(35, 35, 35, 1), // Background color
       ),
       child: GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2, // Maximum 3 items per row
-          crossAxisSpacing: 8.0, // Spacing between items
-          mainAxisSpacing: 8.0, // Spacing between rows
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          crossAxisSpacing: 8.0,
+          mainAxisSpacing: 8.0,
         ),
         itemCount: filteredAnime.length,
         itemBuilder: (context, index) {
@@ -84,14 +97,14 @@ Widget build(BuildContext context) {
               height: 250, // Adjust the height as needed
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                color: Color.fromARGB(255, 44, 44, 44), 
+                color: const Color.fromARGB(255, 44, 44, 44), 
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Expanded(
                     child: ClipRRect(
-                      borderRadius: BorderRadius.vertical(
+                      borderRadius: const BorderRadius.vertical(
                         top: Radius.circular(10),
                       ),
                       child: Image.asset(
@@ -105,7 +118,7 @@ Widget build(BuildContext context) {
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
                       anime.title,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 13,
                         fontWeight: FontWeight.bold,
                         color: Color.fromARGB(255, 255, 255, 255)
