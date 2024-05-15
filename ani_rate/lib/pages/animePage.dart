@@ -1,5 +1,7 @@
 // Import necessary packages and detail pages
 import 'package:ani_rate/pages/animePages/aot_page.dart';
+import 'package:ani_rate/pages/animePages/dragonball_page.dart';
+import 'package:ani_rate/pages/animePages/jk_page.dart';
 import 'package:ani_rate/pages/animePages/mha_page.dart';
 import 'package:ani_rate/pages/animePages/onepiece_page.dart';
 import 'package:flutter/material.dart';
@@ -41,7 +43,13 @@ class AnimePage extends StatelessWidget {
     if (anime.title == 'Jujutsu Kaisen') {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => AOTPage(anime:anime)),
+        MaterialPageRoute(builder: (context) => JKPage(anime:anime)),
+      );
+    }
+    if (anime.title == 'Dragon Ball') {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => DGPage(anime:anime)),
       );
     }
     }

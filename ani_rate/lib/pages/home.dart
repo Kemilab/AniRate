@@ -2,6 +2,7 @@ import 'package:ani_rate/models/spotlight_model.dart';
 import 'package:ani_rate/models/topRating_model.dart';
 import 'package:ani_rate/pages/animePage.dart';
 import 'package:ani_rate/pages/animePages/aot_page.dart';
+import 'package:ani_rate/pages/animePages/dragonball_page.dart';
 import 'package:ani_rate/pages/animePages/jk_page.dart';
 import 'package:ani_rate/pages/animePages/mha_page.dart';
 import 'package:ani_rate/pages/animePages/onepiece_page.dart';
@@ -29,6 +30,7 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
       Anime(title: 'Attack on Titan', imagePath: 'assets/attackontitan_main_cover.png'),
       Anime(title: 'My hero academia', imagePath: 'assets/mha_main_cover.png'),
       Anime(title: 'Jujutsu Kaisen', imagePath: 'assets/jujutsukaisen_main_cover.png'),
+      Anime(title: 'Dragon Ball', imagePath: 'assets/dragonball_main_cover.png'),
       // Add more anime entries as needed
     ];
   }
@@ -64,7 +66,7 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
             right: 0.0, // Right position set to 0.0 (stretch to full width)
             height: 200.0, // Adjust height as needed
             child: Image.asset(
-              'assets/onepiece_spotlight.png',
+              'assets/title.png',
               fit: BoxFit.cover,
             ),
           ),
@@ -218,6 +220,12 @@ void _navigateToAnimePage(BuildContext context, Anime anime) {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const JKPage(anime: null)),
+      );
+    }
+    else if (anime.title == 'Dragon Ball') {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const DGPage(anime: null)),
       );
     }
     // Add more conditions for other anime titles if needed
