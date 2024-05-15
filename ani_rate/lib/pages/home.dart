@@ -19,52 +19,48 @@ class MyHomeScreen extends StatefulWidget {
 class _MyHomeScreenState extends State<MyHomeScreen> {
   final TextEditingController searchController = TextEditingController();
 
-  List<TopRatingModel> topRatings = [];
-  List<SpotlightModel> spotlights = [];
   List<Anime> animeList = [];
+  List<Anime> allAnimeList = [];
+  List<Anime> displayedAnimeList = [];
+
+  void filterAnimeByName(String query) {
+    List<Anime> filteredList = allAnimeList.where((anime) =>
+        anime.title.toLowerCase().contains(query.toLowerCase())).toList();
+    setState(() {
+      displayedAnimeList = filteredList;
+    });
+  }
 
   void _getAnimeList() {
-    // Simulated function to fetch anime list from somewhere
     animeList = [
       Anime(title: 'One Piece', imagePath: 'assets/onepiece_main_cover.png'),
       Anime(title: 'Attack on Titan', imagePath: 'assets/attackontitan_main_cover.png'),
       Anime(title: 'My hero academia', imagePath: 'assets/mha_main_cover.png'),
       Anime(title: 'Jujutsu Kaisen', imagePath: 'assets/jujutsukaisen_main_cover.png'),
       Anime(title: 'Dragon Ball', imagePath: 'assets/dragonball_main_cover.png'),
-      // Add more anime entries as needed
     ];
-  }
-
-  void _getTopRatings() {
-    topRatings = TopRatingModel.getTopRatings();
-  }
-
-  void _getSpotlights() {
-    spotlights = SpotlightModel.getSpotlights();
+    allAnimeList.addAll(animeList); // Store all anime in a separate list
   }
 
   @override
   void initState() {
     super.initState();
-    _getTopRatings();
-    _getSpotlights();
     _getAnimeList();
+    displayedAnimeList = animeList;
   }
 
   @override
   Widget build(BuildContext context) {
-    _getTopRatings();
-    _getSpotlights();
     return Scaffold(
       backgroundColor: Color.fromRGBO(35, 35, 35, 1),
       appBar: appBar(),
       body: Stack(
         children: [
           Positioned(
-            top: 0.0, // Top position set to 0.0
-            left: 0.0, // Left position set to 0.0
-            right: 0.0, // Right position set to 0.0 (stretch to full width)
-            height: 200.0, // Adjust height as needed
+            top: 0.0,
+            left: 0.0,
+            right: 0.0,
+            height: 200.0,
             child: Image.asset(
               'assets/title.png',
               fit: BoxFit.cover,
@@ -92,14 +88,13 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
                     height: 250,
                     child: ListView.builder(
                       shrinkWrap: true,
-                      itemCount: animeList.length,
+                      itemCount: displayedAnimeList.length,
                       scrollDirection: Axis.horizontal,
                       padding: EdgeInsets.only(left: 20, right: 20),
                       itemBuilder: (context, index) {
-                        Anime anime = animeList[index];
+                        Anime anime = displayedAnimeList[index];
                         return GestureDetector(
                           onTap: () {
-                            // Navigate to the corresponding anime page
                             _navigateToAnimePage(context, anime);
                           },
                           child: Container(
@@ -126,21 +121,21 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
                 ],
               ),
               SizedBox(height: 20,),
-              const Padding(padding: EdgeInsets.only(left:10.0),
-              child: Text(
-                'TAGS',
-                style: TextStyle(
-                  color: Color.fromRGBO(255, 255, 255, 0.72),
-                  fontSize: 19.0,
-                  fontWeight: FontWeight.w500,
+              Padding(
+                padding: const EdgeInsets.only(left: 10.0),
+                child: Text(
+                  'TAGS',
+                  style: TextStyle(
+                    color: Color.fromRGBO(255, 255, 255, 0.72),
+                    fontSize: 19.0,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
-              ),
               ),
               SizedBox(height: 20,),
               tags(context),
             ],
           ),
-          
         ],
       ),
     );
@@ -150,21 +145,23 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
     return AppBar(
       title: TextField(
         controller: searchController,
+        onChanged: (query) {
+          filterAnimeByName(query); // Call filterAnimeByName method when text changes
+        },
         decoration: InputDecoration(
           hintText: 'Search anime...',
           hintStyle: const TextStyle(color: Color.fromARGB(255, 255, 119, 29)),
           prefixIcon: const Icon(Icons.search),
           enabledBorder: UnderlineInputBorder(
-            borderRadius: BorderRadius.circular(10.0), // Add rounded corners
+            borderRadius: BorderRadius.circular(10.0),
             borderSide: const BorderSide(
-              color: Color.fromARGB(
-                  255, 255, 119, 29), // Adjust border color as desired
+              color: Color.fromARGB(255, 255, 119, 29),
             ),
           ),
           focusedBorder: UnderlineInputBorder(
-            borderRadius: BorderRadius.circular(10.0), // Add rounded corners
+            borderRadius: BorderRadius.circular(10.0),
             borderSide: const BorderSide(
-              color: Colors.blue, // Adjust border color for focus state
+              color: Colors.blue,
             ),
           ),
         ),
@@ -174,17 +171,19 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
         margin: EdgeInsets.all(10),
         alignment: Alignment.center,
         decoration: BoxDecoration(
-            color: const Color.fromRGBO(35, 35, 35, 1),
-            borderRadius: BorderRadius.circular(10)),
+          color: const Color.fromRGBO(35, 35, 35, 1),
+          borderRadius: BorderRadius.circular(10),
+        ),
         child: GestureDetector(
           onTap: () {
             showModalBottomSheet(
-                useSafeArea: true,
-                enableDrag: true,
-                context: context,
-                builder: ((context) {
-                  return ProfilePage();
-                }));
+              useSafeArea: true,
+              enableDrag: true,
+              context: context,
+              builder: ((context) {
+                return ProfilePage();
+              }),
+            );
           },
           child: Image.asset(
             'assets/logo.png',
@@ -195,10 +194,8 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
       ),
     );
   }
-}
 
-void _navigateToAnimePage(BuildContext context, Anime anime) {
-    // Navigate to the corresponding anime page based on anime title
+  void _navigateToAnimePage(BuildContext context, Anime anime) {
     if (anime.title == 'Attack on Titan') {
       Navigator.push(
         context,
@@ -228,8 +225,8 @@ void _navigateToAnimePage(BuildContext context, Anime anime) {
         MaterialPageRoute(builder: (context) => const DGPage(anime: null)),
       );
     }
-    // Add more conditions for other anime titles if needed
   }
+}
 
 class Anime {
   final String title;
@@ -238,78 +235,77 @@ class Anime {
   Anime({required this.title, required this.imagePath});
 }
 
+Widget tags(BuildContext context) {
+  return Wrap(
+    spacing: 10,
+    children: [
+      TagWidget(text: 'Action', color: Color.fromARGB(154, 252, 76, 6), onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) =>  AnimePage(tag: 'Action')),
+        );
+      }),
+      TagWidget(text: 'Shounen', color: Color.fromARGB(154, 252, 6, 6), onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const AnimePage(tag: 'Shounen')),
+        );
+      }),
+      TagWidget(text: 'Supernatural', color: Color.fromARGB(154, 252, 207, 6), onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const AnimePage(tag: 'Supernatural')),
+        );
+      }),
+      TagWidget(text: 'War', color: Color.fromARGB(154, 252, 76, 6), onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const AnimePage(tag: 'War')),
+        );
+      }),
+      TagWidget(text: 'Hero', color: Color.fromARGB(154, 252, 76, 6), onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const AnimePage(tag: 'Hero')),
+        );
+      }),
+      TagWidget(text: 'Comedy', color: Color.fromARGB(255, 135, 39, 1), onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const AnimePage(tag: 'Comedy')),
+        );
+      }),
+      TagWidget(text: 'Pirates', color: Color.fromARGB(255, 156, 46, 3), onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const AnimePage(tag: 'Pirates')),
+        );
+      }),
+      TagWidget(text: 'Magic', color: Color.fromARGB(255, 156, 46, 3), onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const AnimePage(tag: 'Magic')),
+        );
+      }),
+    ],
+  );
+}
 
- Widget tags(BuildContext context) {
-    return Wrap(
-      spacing: 10,
-      children: [
-        TagWidget(text: 'Action', color: Color.fromARGB(154, 252, 76, 6), onTap: () {
-          // Navigate to page displaying anime with 'Action' tag
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) =>  AnimePage(tag: 'Action')),
-          );
-        }),
-        TagWidget(text: 'Shounen', color: Color.fromARGB(154, 252, 6, 6), onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const AnimePage(tag: 'Shounen')),
-          );
-        }),
-        TagWidget(text: 'Supernatural', color: Color.fromARGB(154, 252, 207, 6), onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const AnimePage(tag: 'Supernatural')),
-          );
-        }),
-        TagWidget(text: 'War', color: Color.fromARGB(154, 252, 76, 6), onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const AnimePage(tag: 'War')),
-          );
-        }),
-        TagWidget(text: 'Hero', color: Color.fromARGB(154, 252, 76, 6), onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const AnimePage(tag: 'Hero')),
-          );
-        }),
-        TagWidget(text: 'Comedy', color: Color.fromARGB(255, 135, 39, 1), onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const AnimePage(tag: 'Comedy')),
-          );
-        }),
-        TagWidget(text: 'Pirates', color: Color.fromARGB(255, 156, 46, 3), onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const AnimePage(tag: 'Pirates')),
-          );
-        }),
-        TagWidget(text: 'Magic', color: Color.fromARGB(255, 156, 46, 3), onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const AnimePage(tag: 'Magic')),
-          );
-        }),
-      ],
-    );
-  }
 class TagWidget extends StatelessWidget {
   final String text;
   final Color color;
-  final VoidCallback onTap; // Add onTap callback
+  final VoidCallback onTap;
 
   const TagWidget({
     Key? key,
     required this.text,
     required this.color,
-    required this.onTap, // Receive onTap callback
+    required this.onTap,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector( // Wrap with GestureDetector for onTap functionality
+    return GestureDetector(
       onTap: onTap,
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
