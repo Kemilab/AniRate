@@ -3,17 +3,17 @@ import 'package:ani_rate/pages/animePage.dart';
 import 'package:flutter/material.dart';
 import 'package:expandable_text/expandable_text.dart';
 
-class OnePiecePage extends StatefulWidget {
+class AOTPage extends StatefulWidget {
   final Anime? anime;
 
-  const OnePiecePage({Key? key, this.anime}) : super(key: key);
+  const AOTPage({Key? key, this.anime}) : super(key: key);
 
   @override
-  State<OnePiecePage> createState() => _OnePiecePageState();
+  State<AOTPage> createState() => _AOTPageState();
 }
 
 
-class _OnePiecePageState extends State<OnePiecePage> {
+class _AOTPageState extends State<AOTPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,14 +24,14 @@ class _OnePiecePageState extends State<OnePiecePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Image.asset(
-                'assets/onepiece_spotlight.png',
+                'assets/aot_spotlight.jpg',
                 fit: BoxFit.cover,
               ),
               const SizedBox(height: 20.0),
               const Padding(
                 padding: EdgeInsets.only(left: 20.0),
                 child: Text(
-                  'One Piece',
+                  'Attack on Titan',
                   style: TextStyle(
                     color: Color.fromARGB(255, 255, 119, 29),
                     fontSize: 40.0,
@@ -45,7 +45,7 @@ class _OnePiecePageState extends State<OnePiecePage> {
                   right: 20.0,
                 ),
                 child: Text(
-                  'Eichiro Oda',
+                  'Hajime Isayama',
                   style: TextStyle(
                     color: Color.fromARGB(197, 255, 119, 29),
                     fontSize: 18.0,
@@ -106,15 +106,10 @@ class _OnePiecePageState extends State<OnePiecePage> {
       spacing: 10,
       children: [
         TagWidget(text: 'Action', color: Color.fromARGB(154, 252, 76, 6), onTap: () {
+          // Navigate to page displaying anime with 'Action' tag
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) =>  AnimePage(tag: 'Action')),
-          );
-        }),
-        TagWidget(text: 'Adventure', color: Color.fromARGB(255, 156, 46, 3), onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const AnimePage(tag: 'Adventure')),
           );
         }),
         TagWidget(text: 'Shounen', color: Color.fromARGB(154, 252, 6, 6), onTap: () {
@@ -123,22 +118,16 @@ class _OnePiecePageState extends State<OnePiecePage> {
             MaterialPageRoute(builder: (context) => const AnimePage(tag: 'Shounen')),
           );
         }),
-        TagWidget(text: 'Comedy', color: Color.fromARGB(255, 135, 39, 1), onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const AnimePage(tag: 'Comedy')),
-          );
-        }),
-        TagWidget(text: 'Pirates', color: Color.fromARGB(255, 156, 46, 3), onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const AnimePage(tag: 'Pirates')),
-          );
-        }),
         TagWidget(text: 'Supernatural', color: Color.fromARGB(154, 252, 207, 6), onTap: () {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const AnimePage(tag: 'Supernatural')),
+          );
+        }),
+        TagWidget(text: 'War', color: Color.fromARGB(154, 252, 76, 6), onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const AnimePage(tag: 'War')),
           );
         }),
       ],
@@ -229,7 +218,7 @@ class TagWidget extends StatelessWidget {
                 Container(
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
                     child: const Text(
-                      '24 minutes per episode',
+                      '25 minutes per episode',
                       style: TextStyle(
                         fontSize: 15.0,
                         color: Color.fromRGBO(255, 255, 255, 1),
@@ -243,12 +232,12 @@ class TagWidget extends StatelessWidget {
               ),
               SizedBox(height: 20,),
               Wrap(
-                spacing: 100.0, 
+                spacing: 60.0, 
                 children: [
                   Column(
                     children: [
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
                     child: const Text(
                       'AIRING',
                       style: TextStyle(
@@ -259,9 +248,9 @@ class TagWidget extends StatelessWidget {
                     ),
                   ),
                 Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 0.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 5.0),
                     child: const Text(
-                      '20.10.1999. - ?',
+                      '7.4.2013. - 5.11.2023.',
                       style: TextStyle(
                         fontSize: 15.0,
                         color: Color.fromRGBO(255, 255, 255, 1),
@@ -287,7 +276,7 @@ class TagWidget extends StatelessWidget {
                 Container(
                     padding: const EdgeInsets.symmetric(horizontal: 10.0),
                     child: const Text(
-                      'ONE PIECE',
+                      'Shingeki no Kyojin',
                       style: TextStyle(
                         fontSize: 15.0,
                         color: Color.fromRGBO(255, 255, 255, 1),
@@ -323,7 +312,7 @@ class TagWidget extends StatelessWidget {
     return const Padding(
               padding: EdgeInsets.only(left: 10.0, right: 10.0),
               child: ExpandableText(
-                'An alternate version of Earth, and one that is currently in the midst of the "Golden Age of Pirates". Ruthless cut-throat pirates rule the seas, and only the strongest have the chance to lay claim to the mythical treasure known as "One Piece" that was left behind by the greatest pirate of them all Gold Roger. Years after the death of Gold Roger, a young boy by the name of Monkey D. Luffy has dreams of raising his own crew, finding One Piece, and declaring himself as Pirate King. After eating a devil fruit that grants Luffy the power to make his body like rubber, it gives him enormous strength and agility. When Luffy finally comes of age, he sets sail from Foosha Village in East Blue and sets upon his grand adventure to become the next Pirate King.',
+                'It is set in a world where humanity is forced to live in cities surrounded by three enormous walls that protect them from gigantic man-eating humanoids referred to as Titans; the story follows Eren Yeager, who vows to exterminate the Titans after they bring about the destruction of his hometown and the death of his mother.',
                 expandText: 'Show more',
                 collapseText: ' Show less',
                 maxLines: 4,
@@ -363,7 +352,7 @@ Wrap(
   Container(
       padding: const EdgeInsets.symmetric(horizontal: 10.0),
       child: Text(
-        'TOEI ANIMATION',
+        'WIT STUDIO',
         style: TextStyle(
           fontSize: 15.0,
           color: Color.fromARGB(255, 252, 75, 6),
@@ -388,7 +377,7 @@ Wrap(
   Container(
       padding: const EdgeInsets.symmetric(horizontal: 10.0),
       child: Text(
-        '★★★★☆',
+        '★★★☆☆',
         style: TextStyle(
           fontSize: 15.0,
           color: Color.fromARGB(255, 252, 75, 6),
@@ -413,7 +402,7 @@ Wrap(
   Container(
       padding: const EdgeInsets.symmetric(horizontal: 10.0),
       child: Text(
-        '1105 (Airing)',
+        '94',
         style: TextStyle(
           fontSize: 15.0,
           color: Color.fromARGB(255, 252, 75, 6),

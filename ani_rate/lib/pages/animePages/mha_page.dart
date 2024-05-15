@@ -3,17 +3,17 @@ import 'package:ani_rate/pages/animePage.dart';
 import 'package:flutter/material.dart';
 import 'package:expandable_text/expandable_text.dart';
 
-class OnePiecePage extends StatefulWidget {
+class MHAPage extends StatefulWidget {
   final Anime? anime;
 
-  const OnePiecePage({Key? key, this.anime}) : super(key: key);
+  const MHAPage({Key? key, this.anime}) : super(key: key);
 
   @override
-  State<OnePiecePage> createState() => _OnePiecePageState();
+  State<MHAPage> createState() => _MHAPageState();
 }
 
 
-class _OnePiecePageState extends State<OnePiecePage> {
+class _MHAPageState extends State<MHAPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,14 +24,14 @@ class _OnePiecePageState extends State<OnePiecePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Image.asset(
-                'assets/onepiece_spotlight.png',
+                'assets/mha_spotlight.jpg',
                 fit: BoxFit.cover,
               ),
               const SizedBox(height: 20.0),
               const Padding(
                 padding: EdgeInsets.only(left: 20.0),
                 child: Text(
-                  'One Piece',
+                  'My hero academia',
                   style: TextStyle(
                     color: Color.fromARGB(255, 255, 119, 29),
                     fontSize: 40.0,
@@ -45,7 +45,7 @@ class _OnePiecePageState extends State<OnePiecePage> {
                   right: 20.0,
                 ),
                 child: Text(
-                  'Eichiro Oda',
+                  'Kohei Horikoshi',
                   style: TextStyle(
                     color: Color.fromARGB(197, 255, 119, 29),
                     fontSize: 18.0,
@@ -93,7 +93,6 @@ class _OnePiecePageState extends State<OnePiecePage> {
               ),
               SizedBox(height: 20,),
               tags(context),
-              SizedBox(height: 20),
             ],
           ),
         ),
@@ -106,15 +105,10 @@ class _OnePiecePageState extends State<OnePiecePage> {
       spacing: 10,
       children: [
         TagWidget(text: 'Action', color: Color.fromARGB(154, 252, 76, 6), onTap: () {
+          // Navigate to page displaying anime with 'Action' tag
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) =>  AnimePage(tag: 'Action')),
-          );
-        }),
-        TagWidget(text: 'Adventure', color: Color.fromARGB(255, 156, 46, 3), onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const AnimePage(tag: 'Adventure')),
           );
         }),
         TagWidget(text: 'Shounen', color: Color.fromARGB(154, 252, 6, 6), onTap: () {
@@ -123,22 +117,16 @@ class _OnePiecePageState extends State<OnePiecePage> {
             MaterialPageRoute(builder: (context) => const AnimePage(tag: 'Shounen')),
           );
         }),
-        TagWidget(text: 'Comedy', color: Color.fromARGB(255, 135, 39, 1), onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const AnimePage(tag: 'Comedy')),
-          );
-        }),
-        TagWidget(text: 'Pirates', color: Color.fromARGB(255, 156, 46, 3), onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const AnimePage(tag: 'Pirates')),
-          );
-        }),
         TagWidget(text: 'Supernatural', color: Color.fromARGB(154, 252, 207, 6), onTap: () {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const AnimePage(tag: 'Supernatural')),
+          );
+        }),
+        TagWidget(text: 'Hero', color: Color.fromARGB(154, 252, 76, 6), onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const AnimePage(tag: 'Hero')),
           );
         }),
       ],
@@ -191,7 +179,7 @@ class TagWidget extends StatelessWidget {
                     children: [
                   Container(
                     padding: const EdgeInsets.only(left: 0.0),
-                    child: const Text(
+                    child: Text(
                       'TYPE',
                       style: TextStyle(
                         color: Color.fromRGBO(255, 255, 255, 0.72),
@@ -202,7 +190,7 @@ class TagWidget extends StatelessWidget {
                   ),
                 Container(
                     padding: const EdgeInsets.symmetric(horizontal: 70.0),
-                    child: const Text(
+                    child: Text(
                       'TV',
                       style: TextStyle(
                         fontSize: 15.0,
@@ -217,7 +205,7 @@ class TagWidget extends StatelessWidget {
                     children: [
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: const Text(
+                    child: Text(
                       'RUNTIME',
                       style: TextStyle(
                         color: Color.fromRGBO(255, 255, 255, 0.72),
@@ -228,8 +216,8 @@ class TagWidget extends StatelessWidget {
                   ),
                 Container(
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: const Text(
-                      '24 minutes per episode',
+                    child: Text(
+                      '23 minutes per episode',
                       style: TextStyle(
                         fontSize: 15.0,
                         color: Color.fromRGBO(255, 255, 255, 1),
@@ -243,13 +231,13 @@ class TagWidget extends StatelessWidget {
               ),
               SizedBox(height: 20,),
               Wrap(
-                spacing: 100.0, 
+                spacing: 60.0, 
                 children: [
                   Column(
                     children: [
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                    child: const Text(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    child: Text(
                       'AIRING',
                       style: TextStyle(
                         color: Color.fromRGBO(255, 255, 255, 0.72),
@@ -259,9 +247,9 @@ class TagWidget extends StatelessWidget {
                     ),
                   ),
                 Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 0.0),
-                    child: const Text(
-                      '20.10.1999. - ?',
+                    padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                    child: Text(
+                      '3.4.2016. - ?',
                       style: TextStyle(
                         fontSize: 15.0,
                         color: Color.fromRGBO(255, 255, 255, 1),
@@ -275,7 +263,7 @@ class TagWidget extends StatelessWidget {
                     children: [
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                    child: const Text(
+                    child: Text(
                       'NATIVE NAME',
                       style: TextStyle(
                         color: Color.fromRGBO(255, 255, 255, 0.72),
@@ -286,8 +274,8 @@ class TagWidget extends StatelessWidget {
                   ),
                 Container(
                     padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                    child: const Text(
-                      'ONE PIECE',
+                    child: Text(
+                      'Boku no Hīrō Akademia',
                       style: TextStyle(
                         fontSize: 15.0,
                         color: Color.fromRGBO(255, 255, 255, 1),
@@ -323,7 +311,7 @@ class TagWidget extends StatelessWidget {
     return const Padding(
               padding: EdgeInsets.only(left: 10.0, right: 10.0),
               child: ExpandableText(
-                'An alternate version of Earth, and one that is currently in the midst of the "Golden Age of Pirates". Ruthless cut-throat pirates rule the seas, and only the strongest have the chance to lay claim to the mythical treasure known as "One Piece" that was left behind by the greatest pirate of them all Gold Roger. Years after the death of Gold Roger, a young boy by the name of Monkey D. Luffy has dreams of raising his own crew, finding One Piece, and declaring himself as Pirate King. After eating a devil fruit that grants Luffy the power to make his body like rubber, it gives him enormous strength and agility. When Luffy finally comes of age, he sets sail from Foosha Village in East Blue and sets upon his grand adventure to become the next Pirate King.',
+                "The story follows Izuku Midoriya, a boy born without superpowers in a world where they are the norm, but who still dreams of becoming a superhero himself, and is scouted by the world's greatest hero, All Might, who shares his powers with Izuku after recognizing his value and enrolls him in a prestigious high school for heroes.",
                 expandText: 'Show more',
                 collapseText: ' Show less',
                 maxLines: 4,
@@ -363,7 +351,7 @@ Wrap(
   Container(
       padding: const EdgeInsets.symmetric(horizontal: 10.0),
       child: Text(
-        'TOEI ANIMATION',
+        'STUDIO BONES',
         style: TextStyle(
           fontSize: 15.0,
           color: Color.fromARGB(255, 252, 75, 6),
@@ -388,7 +376,7 @@ Wrap(
   Container(
       padding: const EdgeInsets.symmetric(horizontal: 10.0),
       child: Text(
-        '★★★★☆',
+        '★ ★ ★ ★ ★',
         style: TextStyle(
           fontSize: 15.0,
           color: Color.fromARGB(255, 252, 75, 6),
@@ -413,7 +401,7 @@ Wrap(
   Container(
       padding: const EdgeInsets.symmetric(horizontal: 10.0),
       child: Text(
-        '1105 (Airing)',
+        '140 (Airing)',
         style: TextStyle(
           fontSize: 15.0,
           color: Color.fromARGB(255, 252, 75, 6),

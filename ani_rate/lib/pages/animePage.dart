@@ -1,4 +1,6 @@
 // Import necessary packages and detail pages
+import 'package:ani_rate/pages/animePages/aot_page.dart';
+import 'package:ani_rate/pages/animePages/mha_page.dart';
 import 'package:ani_rate/pages/animePages/onepiece_page.dart';
 import 'package:flutter/material.dart';
 import 'package:ani_rate/models/Anime.dart';
@@ -19,13 +21,29 @@ class AnimePage extends StatelessWidget {
   void navigateToDetailPage(BuildContext context, Anime anime) {
     // Check the title of the anime
     if (anime.title == 'One Piece') {
-      // If the title is 'One Piece', navigate to the One Piece detail page
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => OnePiecePage(anime:anime)), // Pass the anime object to the detail page constructor
+        MaterialPageRoute(builder: (context) => OnePiecePage(anime:anime)),
       );
     } else {
-      // Add more conditions for other anime titles if needed
+      if (anime.title == 'Attack on Titan') {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => AOTPage(anime:anime)),
+      );
+    }
+    if (anime.title == 'My hero academia') {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => MHAPage(anime:anime)),
+      );
+    }
+    if (anime.title == 'Jujutsu Kaisen') {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => AOTPage(anime:anime)),
+      );
+    }
     }
   }
 @override

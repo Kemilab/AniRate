@@ -10,10 +10,10 @@ class Anime {
   });
 }
 List<Anime> animeList = [
-  Anime(title: 'Dragon Ball', tags: ['Action', 'Adventure', 'Shounen'], imagePath: 'assets/dragonball_main_cover.png'),
-  Anime(title: 'One Piece', tags: ['Action', 'Adventure', 'Shounen'], imagePath: 'assets/onepiece_main_cover.png'),
-  Anime(title: 'Attack on Titan', tags: ['Action', 'Fantasy', 'Shounen'], imagePath: 'assets/attackontitan_main_cover.png'),
-  Anime(title: 'My hero academia', tags: ['Action', 'Hero', 'Shounen'], imagePath: 'assets/mha_main_cover.png'),
-  Anime(title: 'Jujutsu Kaisen', tags: ['Action', 'Fantasy', 'Shounen'], imagePath: 'assets/jujutsukaisen_main_cover.png'),
+  Anime(title: 'Dragon Ball', tags: ['Action', 'Adventure', 'Shounen', 'Supernatural', 'Comedy'], imagePath: 'assets/dragonball_main_cover.png'),
+  Anime(title: 'One Piece', tags: ['Action', 'Adventure', 'Shounen', 'Comedy', 'Pirates', 'Supernatural'], imagePath: 'assets/onepiece_main_cover.png'),
+  Anime(title: 'Attack on Titan', tags: ['Action', 'Fantasy', 'Shounen', 'Supernatural'], imagePath: 'assets/attackontitan_main_cover.png'),
+  Anime(title: 'My hero academia', tags: ['Action', 'Hero', 'Shounen', 'Supernatural'], imagePath: 'assets/mha_main_cover.png'),
+  Anime(title: 'Jujutsu Kaisen', tags: ['Action', 'Fantasy', 'Shounen', 'Magic', 'Supernatural'], imagePath: 'assets/jujutsukaisen_main_cover.png'),
   // Add more anime objects with tags as needed
 ];
