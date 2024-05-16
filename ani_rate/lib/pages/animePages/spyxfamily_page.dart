@@ -338,7 +338,7 @@ Wrap(
     Column(
       children: [
     Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+      padding: const EdgeInsets.symmetric(horizontal: 5.0),
       child: Text(
         'STUDIO',
         style: TextStyle(
@@ -349,11 +349,11 @@ Wrap(
       ),
     ),
   Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+      padding: const EdgeInsets.symmetric(horizontal: 5.0),
       child: Text(
-        'WIT STUDIO CLOVERWORKS',
+        'WIT CLOVERWORKS',
         style: TextStyle(
-          fontSize: 15.0,
+          fontSize: 14.0,
           color: Color.fromARGB(255, 252, 75, 6),
           fontWeight: FontWeight.bold,
         ),
@@ -363,7 +363,7 @@ Wrap(
     ),
     Column(children: [
     Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+      padding: const EdgeInsets.symmetric(horizontal: 5.0),
       child: Text(
         'AVERAGE SCORE',
         style: TextStyle(
@@ -374,7 +374,7 @@ Wrap(
       ),
     ),
   Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+      padding: const EdgeInsets.symmetric(horizontal: 5.0),
       child: Text(
         '★★★★★',
         style: TextStyle(
@@ -388,7 +388,7 @@ Wrap(
     ),
     Column(children: [
     Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+      padding: const EdgeInsets.symmetric(horizontal: 5.0),
       child: Text(
         'EPISODES',
         style: TextStyle(
@@ -399,7 +399,7 @@ Wrap(
       ),
     ),
   Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+      padding: const EdgeInsets.symmetric(horizontal: 5.0),
       child: Text(
         '37 (Airing)',
         style: TextStyle(

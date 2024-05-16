@@ -334,7 +334,7 @@ class TagWidget extends StatelessWidget {
 crossAxisAlignment: CrossAxisAlignment.start, 
 children: [
 Wrap(
-  spacing: 1.0, 
+  spacing: 25.0, 
   children: [
     Column(
       children: [
