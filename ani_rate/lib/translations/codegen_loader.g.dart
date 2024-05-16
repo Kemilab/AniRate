@@ -16,11 +16,27 @@ class CodegenLoader extends AssetLoader{
 
   static const Map<String,dynamic> en = {
   "login": "Login",
-  "sign_up": "Sign Up"
+  "sign_up": "Sign Up",
+  "password": "Password",
+  "account": "Account",
+  "reet_password": "Reset Password",
+  "change_language": "Change Launguage",
+  "remove_account": "Remove Account",
+  "search_anime": "Search anime...",
+  "all_anime": "All anime",
+  "tags": "TAGS"
 };
-static const Map<String,dynamic> hr_HR = {
+static const Map<String,dynamic> hr = {
   "login": "Prijava",
-  "sign_up": "Registracija"
+  "sign_up": "Registracija",
+  "password": "Lozinka",
+  "account": "Korisnički Račun",
+  "reet_password": "Ponovno postavi lozinku",
+  "change_language": "Promijeni Jezik",
+  "remove_account": "Izbriši Račun",
+  "search_anime": "Pretražite anime..",
+  "all_anime": "Svaki anime",
+  "tags": "KLJUČNE RIJEČI"
 };
-static const Map<String, Map<String,dynamic>> mapLocales = {"en": en, "hr_HR": hr_HR};
+static const Map<String, Map<String,dynamic>> mapLocales = {"en": en, "hr": hr};
 }

@@ -1,3 +1,5 @@
+import 'package:ani_rate/translations/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -39,7 +41,7 @@ class _ProfilePageState extends State<ProfilePage> {
               height: 18.0, // Adjust height as needed
               child: Center(
                 child: Text(
-                  "Account",
+                  "account".tr(),
                   style: GoogleFonts.poppins(
                       textStyle: const TextStyle(
                     color: Colors.white,
@@ -101,7 +103,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "Reset Password",
+                          "reet_password".tr(),
                           style: GoogleFonts.poppins(
                             textStyle: TextStyle(
                               color: resetPasswordSuccess
@@ -116,7 +118,9 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    context.setLocale(Locale('hr'));
+                  },
                   child: Container(
                     height: 50,
                     decoration: BoxDecoration(
@@ -128,7 +132,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "Change Launguage",
+                          "change_language".tr(),
                           style: GoogleFonts.poppins(
                             textStyle: const TextStyle(
                               color: Color.fromARGB(255, 8, 235, 178),
@@ -153,7 +157,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "Remove Account",
+                          "remove_account".tr(),
                           style: GoogleFonts.poppins(
                             textStyle: const TextStyle(
                               color: Color.fromARGB(255, 255, 0, 0),

@@ -13,7 +13,7 @@ void main() async {
   );
   runApp(EasyLocalization(
     path: 'assets/translations',
-    supportedLocales: [Locale('en'), Locale('hr_HR')],
+    supportedLocales: [Locale('en'), Locale('hr')],
     fallbackLocale: Locale('en'),
     assetLoader: CodegenLoader(),
     child: MyApp(),

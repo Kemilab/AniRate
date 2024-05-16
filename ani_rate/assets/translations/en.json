@@ -1,5 +1,12 @@
 {
   "login": "Login",
   "sign_up": "Sign Up",
-  "password": "Password"
+  "password": "Password",
+  "account": "Account",
+  "reet_password": "Reset Password",
+  "change_language": "Change Launguage",
+  "remove_account": "Remove Account",
+  "search_anime": "Search anime...",
+  "all_anime": "All anime",
+  "tags": "TAGS"
 }
