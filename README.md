@@ -13,7 +13,7 @@ AniRate is an anime rating application that allows users to rate and review thei
 - **Search Functionality**: Easily search for anime by title, genre, or popularity.
 - **User Profiles**: View and edit your profile, see your rated anime list.
 
-![Feature Image]((https://github.com/Kemilab/AniRate/blob/main/ani_rate/assets/title.png))
+![Feature Image](https://github.com/Kemilab/AniRate/blob/main/ani_rate/assets/title.png)
 
 ## Getting Started
 
