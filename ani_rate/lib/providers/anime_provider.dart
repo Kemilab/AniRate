@@ -2,7 +2,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:hive/hive.dart';
 import '../models/anime_model.dart';
 
 class AnimeProvider with ChangeNotifier {
@@ -64,22 +63,10 @@ class AnimeProvider with ChangeNotifier {
           fetchedAnime.map((anime) => Anime.fromJson(anime)).toList();
       _animeList.addAll(animeList);
 
-      // Cache data locally
-      var box = await Hive.openBox('animeBox');
-      box.put('animeList', _animeList);
-
       _page++;
     }
 
     _isLoading = false;
-    notifyListeners();
-  }
-
-  Future<void> loadCachedAnime() async {
-    var box = await Hive.openBox('animeBox');
-    _animeList = (box.get('animeList', defaultValue: []) as List)
-        .map((anime) => Anime.fromJson(anime))
-        .toList();
     notifyListeners();
   }
 }

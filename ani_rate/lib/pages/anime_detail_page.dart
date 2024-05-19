@@ -1,9 +1,9 @@
 // lib/pages/anime_detail_page.dart
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:expandable_text/expandable_text.dart';
 import '../models/anime_model.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 
 class AnimeDetailPage extends StatelessWidget {
   final Anime anime;
@@ -19,13 +19,13 @@ class AnimeDetailPage extends StatelessWidget {
           Positioned.fill(
             child: ImageFiltered(
               imageFilter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-              child: Image.network(
-                anime.bannerImageUrl,
+              child: CachedNetworkImage(
+                imageUrl: anime.bannerImageUrl,
                 fit: BoxFit.cover,
               ),
             ),
           ),
-          //Dark overlay
+          // Dark overlay
           Positioned.fill(
             child: Container(
               color: Colors.black.withOpacity(0.5),
@@ -37,38 +37,13 @@ class AnimeDetailPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Stack(
-                    alignment: Alignment.center,
-                    clipBehavior: Clip.none,
-                    children: [
-                      Image.network(
-                        anime.bannerImageUrl,
-                        fit: BoxFit.cover,
-                        width: double.infinity,
-                        height: 200,
-                      ),
-                      Positioned(
-                        top: 100, // 50% of the banner height
-                        child: Container(
-                          width: 100,
-                          height: 100,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.rectangle,
-                            borderRadius: BorderRadius.circular(12.0),
-                            image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: NetworkImage(anime.coverImageUrl),
-                            ),
-                            border: Border.all(
-                              color: Colors.white,
-                              width: 4.0,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+                  CachedNetworkImage(
+                    imageUrl: anime.bannerImageUrl,
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                    height: 200,
                   ),
-                  SizedBox(height: 60),
+                  SizedBox(height: 20),
                   Text(
                     anime.englishTitle.isNotEmpty
                         ? anime.englishTitle
@@ -161,31 +136,55 @@ class AnimeDetailPage extends StatelessWidget {
                           ),
                         ),
                         SizedBox(height: 10),
-                        buildSeriesInfoRow("Type", anime.type),
-                        buildSeriesInfoRow(
-                            "Episodes", anime.episodes.toString()),
-                        buildSeriesInfoRow("Runtime", "${anime.runtime} min"),
+                        Text(
+                          "Type",
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          anime.type,
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        SizedBox(height: 10),
+                        Text(
+                          "Episodes",
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          anime.episodes.toString(),
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        SizedBox(height: 10),
+                        Text(
+                          "Runtime",
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          "${anime.runtime} min",
+                          style: TextStyle(color: Colors.white),
+                        ),
                         SizedBox(height: 10),
                         Text(
                           "Tags",
                           style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
+                              color: Colors.white, fontWeight: FontWeight.bold),
                         ),
                         Wrap(
-                          spacing: 4.0,
+                          spacing: 8.0,
                           runSpacing: 4.0,
                           children: anime.tags.map((tag) {
                             return Chip(
-                              backgroundColor: Colors.blueGrey.withOpacity(0.2),
+                              backgroundColor: Colors.white.withOpacity(0.1),
                               label: Text(
                                 tag,
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 12),
                               ),
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 8.0, vertical: 4.0),
+                              padding: EdgeInsets.all(4.0),
+                              elevation: 4,
+                              shadowColor: Colors.white.withOpacity(0.5),
                             );
                           }).toList(),
                         ),
@@ -195,28 +194,6 @@ class AnimeDetailPage extends StatelessWidget {
                 ],
               ),
             ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget buildSeriesInfoRow(String label, String value) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 5.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            label,
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          Text(
-            value,
-            style: TextStyle(color: Colors.white),
           ),
         ],
       ),

@@ -1,8 +1,8 @@
 // lib/pages/home.dart
 import 'package:ani_rate/pages/profile_page.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../models/anime_model.dart';
 import '../providers/anime_provider.dart';
 import 'anime_detail_page.dart';
@@ -24,7 +24,7 @@ class MyHomeScreen extends StatelessWidget {
               },
               child: const CircleAvatar(
                 backgroundImage: NetworkImage(
-                    'https://example.com/profile.jpg'), // Replace with actual profile image URL
+                    'https://www.woolha.com/media/2020/03/eevee.png'), // Replace with actual profile image URL
               ),
             ),
             const SizedBox(width: 10),
@@ -132,7 +132,7 @@ class AnimeGridView extends StatelessWidget {
                     child: CachedNetworkImage(
                       imageUrl: anime.coverImageUrl,
                       placeholder: (context, url) =>
-                          CircularProgressIndicator(),
+                          Center(child: CircularProgressIndicator()),
                       errorWidget: (context, url, error) => Icon(Icons.error),
                       fit: BoxFit.cover,
                       width: double.infinity,
