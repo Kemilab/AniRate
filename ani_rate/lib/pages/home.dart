@@ -60,28 +60,6 @@ class MyHomeScreen extends StatelessWidget {
         color: Colors.black,
         child: AnimeGridView(),
       ),
-      bottomNavigationBar: BottomAppBar(
-        color: const Color.fromRGBO(35, 35, 35, 1),
-        shape: const CircularNotchedRectangle(),
-        notchMargin: 6.0,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-            IconButton(
-              icon: const Icon(Icons.home, color: Colors.white),
-              onPressed: () {},
-            ),
-            IconButton(
-              icon: const Icon(Icons.search, color: Colors.white),
-              onPressed: () {},
-            ),
-            IconButton(
-              icon: const Icon(Icons.person, color: Colors.white),
-              onPressed: () {},
-            ),
-          ],
-        ),
-      ),
     );
   }
 }
