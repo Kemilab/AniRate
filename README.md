@@ -42,8 +42,6 @@ To get a local copy up and running, follow these simple steps.
     flutter run
     ```
 
-![Installation Image](path_to_installation_image)
-
 ## Project Structure
 
 ```plaintext
