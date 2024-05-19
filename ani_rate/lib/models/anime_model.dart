@@ -1,43 +1,16 @@
-import 'package:hive/hive.dart';
-
-part 'anime_model.g.dart';
-
-@HiveType(typeId: 0)
+// lib/models/anime_model.dart
 class Anime {
-  @HiveField(0)
   final String title;
-
-  @HiveField(1)
   final String englishTitle;
-
-  @HiveField(2)
   final String coverImageUrl;
-
-  @HiveField(3)
   final String bannerImageUrl;
-
-  @HiveField(4)
   final int averageScore;
-
-  @HiveField(5)
   final int popularity;
-
-  @HiveField(6)
   final int meanScore;
-
-  @HiveField(7)
   final int episodes;
-
-  @HiveField(8)
   final String description;
-
-  @HiveField(9)
   final String type;
-
-  @HiveField(10)
   final int runtime;
-
-  @HiveField(11)
   final List<String> tags;
 
   Anime({
@@ -70,21 +43,5 @@ class Anime {
       runtime: json['duration'] ?? 0,
       tags: (json['tags'] as List).map((tag) => tag['name'] as String).toList(),
     );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'title': {'romaji': title, 'english': englishTitle},
-      'coverImage': {'large': coverImageUrl},
-      'bannerImage': bannerImageUrl,
-      'averageScore': averageScore,
-      'popularity': popularity,
-      'meanScore': meanScore,
-      'episodes': episodes,
-      'description': description,
-      'type': type,
-      'duration': runtime,
-      'tags': tags.map((tag) => {'name': tag}).toList(),
-    };
   }
 }
