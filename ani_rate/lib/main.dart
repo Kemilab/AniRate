@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => AnimeProvider()..fetchAnime(),
+      create: (context) => AnimeProvider(),
       child: MaterialApp(
         supportedLocales: context.supportedLocales,
         localizationsDelegates: context.localizationDelegates,
