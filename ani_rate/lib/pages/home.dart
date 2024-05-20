@@ -70,7 +70,7 @@ class AnimeGridView extends StatelessWidget {
     return Consumer<AnimeProvider>(
       builder: (context, animeProvider, child) {
         if (animeProvider.isLoading && animeProvider.animeList.isEmpty) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator(color: Color.fromARGB(255, 252, 131, 50)));
         }
 
         return NotificationListener<ScrollNotification>(
