@@ -1,4 +1,3 @@
-// lib/models/anime_model.dart
 class Anime {
   final String title;
   final String englishTitle;
@@ -28,25 +27,26 @@ class Anime {
     required this.tags,
   });
 
-  // Add the fromJson method
   factory Anime.fromJson(Map<String, dynamic> json) {
     return Anime(
-      title: json['title']['romaji'] as String,
-      englishTitle: json['title']['english'] as String,
-      bannerImageUrl: json['bannerImage'] as String,
-      coverImageUrl: json['coverImage']['large'] as String,
-      averageScore: json['averageScore'] as int,
-      popularity: json['popularity'] as int,
-      meanScore: json['meanScore'] as int,
-      episodes: json['episodes'] as int,
-      runtime: json['duration'] as int,
-      description: json['description'] as String,
-      type: json['type'] as String,
-      tags: (json['tags'] as List).map((tag) => tag['name'] as String).toList(),
+      title: json['title']['romaji'] ?? '',
+      englishTitle: json['title']['english'] ?? '',
+      bannerImageUrl: json['bannerImage'] ?? '',
+      coverImageUrl: json['coverImage']['large'] ?? '',
+      averageScore:
+          json['averageScore'] != null ? json['averageScore'] as int : 0,
+      popularity: json['popularity'] != null ? json['popularity'] as int : 0,
+      meanScore: json['meanScore'] != null ? json['meanScore'] as int : 0,
+      episodes: json['episodes'] != null ? json['episodes'] as int : 0,
+      runtime: json['duration'] != null ? json['duration'] as int : 0,
+      description: json['description'] ?? '',
+      type: json['type'] ?? '',
+      tags: (json['tags'] as List<dynamic>? ?? [])
+          .map((tag) => tag['name'] as String)
+          .toList(),
     );
   }
 
-  // Add the toJson method
   Map<String, dynamic> toJson() {
     return {
       'title': title,

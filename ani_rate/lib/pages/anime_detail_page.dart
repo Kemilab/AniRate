@@ -6,7 +6,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:expandable/expandable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import '../models/anime_model.dart';
+import 'my_reviews_page.dart';
 
 class AnimeDetailPage extends StatelessWidget {
   final Anime anime;
@@ -32,7 +34,8 @@ class AnimeDetailPage extends StatelessWidget {
     }
   }
 
-  Future<void> _submitReview(BuildContext context, String review) async {
+  Future<void> _submitReview(
+      BuildContext context, String review, double rating) async {
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       final reviewsRef = FirebaseFirestore.instance
@@ -42,6 +45,7 @@ class AnimeDetailPage extends StatelessWidget {
           .doc(user.uid);
       await reviewsRef.set({
         'review': review,
+        'rating': rating,
         'user': user.email,
         'timestamp': FieldValue.serverTimestamp(),
       });
@@ -57,46 +61,86 @@ class AnimeDetailPage extends StatelessWidget {
   }
 
   void _showReviewDialog(BuildContext context) {
-  final TextEditingController reviewController = TextEditingController();
-  showDialog(
-    context: context,
-    builder: (context) => AlertDialog(
-      backgroundColor: Color.fromARGB(255, 0, 0, 0),
-      title: const Text(
-        'Submit Review',
-        style: TextStyle(color: Color.fromARGB(255, 252, 131, 50)),
-      ),
-      content: TextField(
-        controller: reviewController,
-        style: const TextStyle(color: Color.fromARGB(255, 255, 255, 255)), // Set the text color here
-        decoration: const InputDecoration(
-          hintText: 'Write your review here...',
-          hintStyle: TextStyle(color: Color.fromARGB(160, 252, 131, 50)),
-        ),
-        maxLines: 5,
-      ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.pop(context),
-          child: const Text(
-            'Cancel',
-            style: TextStyle(color: Color.fromARGB(255, 252, 131, 50)),
-          ),
-        ),
-        TextButton(
-          onPressed: () {
-            _submitReview(context, reviewController.text);
-          },
-          child: const Text(
-            'Submit',
-            style: TextStyle(color: Color.fromARGB(255, 252, 131, 50)),
-          ),
-        ),
-      ],
-    ),
-  );
-}
+    final TextEditingController reviewController = TextEditingController();
+    double rating = 3.0;
 
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: Color.fromARGB(255, 0, 0, 0),
+        title: const Text(
+          'Submit Review',
+          style: TextStyle(color: Color.fromARGB(255, 252, 131, 50)),
+        ),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              RatingBar.builder(
+                initialRating: rating,
+                minRating: 1,
+                direction: Axis.horizontal,
+                allowHalfRating: true,
+                itemCount: 5,
+                itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                itemBuilder: (context, _) => Icon(
+                  Icons.star,
+                  color: Colors.amber,
+                ),
+                onRatingUpdate: (newRating) {
+                  rating = newRating;
+                },
+              ),
+              SizedBox(height: 16.0),
+              TextField(
+                controller: reviewController,
+                style:
+                    const TextStyle(color: Color.fromARGB(255, 255, 255, 255)),
+                decoration: const InputDecoration(
+                  hintText: 'Write your review here...',
+                  hintStyle:
+                      TextStyle(color: Color.fromARGB(160, 252, 131, 50)),
+                ),
+                maxLines: 5,
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text(
+              'Cancel',
+              style: TextStyle(color: Color.fromARGB(255, 252, 131, 50)),
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              _submitReview(context, reviewController.text, rating);
+            },
+            child: const Text(
+              'Submit',
+              style: TextStyle(color: Color.fromARGB(255, 252, 131, 50)),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<bool> _checkIfReviewed() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      final reviewDoc = await FirebaseFirestore.instance
+          .collection('anime')
+          .doc(anime.title)
+          .collection('reviews')
+          .doc(user.uid)
+          .get();
+      return reviewDoc.exists;
+    }
+    return false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -189,14 +233,45 @@ class AnimeDetailPage extends StatelessWidget {
                           "Episodes: ${anime.episodes}",
                           style: TextStyle(color: Colors.white),
                         ),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color.fromARGB(255, 0, 0, 0),
-                          ),
-                          onPressed: () => _showReviewDialog(context),
-                          child: Text("Review",
-                              style: TextStyle(
-                                  color: Color.fromARGB(255, 252, 150, 33))),
+                        FutureBuilder<bool>(
+                          future: _checkIfReviewed(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return CircularProgressIndicator();
+                            }
+                            if (snapshot.data == true) {
+                              return ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      const Color.fromARGB(255, 0, 0, 0),
+                                ),
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => MyReviewsPage(),
+                                    ),
+                                  );
+                                },
+                                child: Text("My Review",
+                                    style: TextStyle(
+                                        color:
+                                            Color.fromARGB(255, 252, 150, 33))),
+                              );
+                            }
+                            return ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                    const Color.fromARGB(255, 0, 0, 0),
+                              ),
+                              onPressed: () => _showReviewDialog(context),
+                              child: Text("Review",
+                                  style: TextStyle(
+                                      color:
+                                          Color.fromARGB(255, 252, 150, 33))),
+                            );
+                          },
                         ),
                       ],
                     ),
@@ -313,7 +388,9 @@ class AnimeDetailPage extends StatelessWidget {
                                     hiddenTags.isNotEmpty
                                         ? 'Show more'
                                         : 'Show less',
-                                    style: TextStyle(color: const Color.fromARGB(255, 255, 255, 255)),
+                                    style: TextStyle(
+                                        color: const Color.fromARGB(
+                                            255, 255, 255, 255)),
                                   ),
                                 ),
                               ],

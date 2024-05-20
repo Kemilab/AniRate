@@ -50,6 +50,7 @@ dependencies:
   cached_network_image: ^3.3.1
   cloud_firestore:
   expandable: ^5.0.1
+  flutter_rating_bar: ^4.0.1
 
 dev_dependencies:
   flutter_test:
