@@ -1,9 +1,9 @@
 // lib/pages/anime_detail_page.dart
 import 'dart:ui';
-import 'package:expandable/expandable.dart';
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:expandable/expandable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/anime_model.dart';
@@ -45,6 +45,7 @@ class AnimeDetailPage extends StatelessWidget {
         'user': user.email,
         'timestamp': FieldValue.serverTimestamp(),
       });
+      Navigator.pop(context);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Review submitted!')),
       );
@@ -74,7 +75,6 @@ class AnimeDetailPage extends StatelessWidget {
           TextButton(
             onPressed: () {
               _submitReview(context, reviewController.text);
-              Navigator.pop(context);
             },
             child: Text('Submit'),
           ),
