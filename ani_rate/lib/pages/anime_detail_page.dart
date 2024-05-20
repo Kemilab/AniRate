@@ -1,7 +1,11 @@
+// lib/pages/anime_detail_page.dart
 import 'dart:ui';
+import 'package:expandable/expandable.dart';
+import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:expandable_text/expandable_text.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/anime_model.dart';
 
 class AnimeDetailPage extends StatelessWidget {
@@ -9,8 +13,83 @@ class AnimeDetailPage extends StatelessWidget {
 
   const AnimeDetailPage({required this.anime});
 
+  Future<void> _addToFavorites(BuildContext context) async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      final favoriteRef = FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .collection('favorites')
+          .doc(anime.title);
+      await favoriteRef.set(anime.toJson());
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Added to favorites!')),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Please log in first')),
+      );
+    }
+  }
+
+  Future<void> _submitReview(BuildContext context, String review) async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      final reviewsRef = FirebaseFirestore.instance
+          .collection('anime')
+          .doc(anime.title)
+          .collection('reviews')
+          .doc(user.uid);
+      await reviewsRef.set({
+        'review': review,
+        'user': user.email,
+        'timestamp': FieldValue.serverTimestamp(),
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Review submitted!')),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Please log in first')),
+      );
+    }
+  }
+
+  void _showReviewDialog(BuildContext context) {
+    final TextEditingController reviewController = TextEditingController();
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Submit Review'),
+        content: TextField(
+          controller: reviewController,
+          decoration: InputDecoration(hintText: 'Write your review here...'),
+          maxLines: 5,
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () {
+              _submitReview(context, reviewController.text);
+              Navigator.pop(context);
+            },
+            child: Text('Submit'),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    List<String> initialTags =
+        anime.tags.length > 5 ? anime.tags.sublist(0, 5) : anime.tags;
+    List<String> hiddenTags =
+        anime.tags.length > 5 ? anime.tags.sublist(5) : [];
+
     return Scaffold(
       body: Stack(
         children: [
@@ -33,62 +112,60 @@ class AnimeDetailPage extends StatelessWidget {
           // Main content with SafeArea
           SafeArea(
             child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CachedNetworkImage(
-                      imageUrl: anime.bannerImageUrl,
-                      fit: BoxFit.cover,
-                      width: double.infinity,
-                      height: 200,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  CachedNetworkImage(
+                    imageUrl: anime.bannerImageUrl,
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                    height: 200,
+                  ),
+                  SizedBox(height: 20),
+                  Text(
+                    anime.englishTitle.isNotEmpty
+                        ? anime.englishTitle
+                        : anime.title,
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
                     ),
-                    SizedBox(height: 20),
-                    Text(
-                      anime.englishTitle.isNotEmpty
-                          ? anime.englishTitle
-                          : anime.title,
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                      textAlign: TextAlign.left,
+                    textAlign: TextAlign.center,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Avg Score: ${anime.averageScore}",
+                          style: TextStyle(color: Colors.orangeAccent),
+                        ),
+                        SizedBox(width: 10),
+                        Text(
+                          "Popularity: ${anime.popularity}",
+                          style: TextStyle(color: Colors.orangeAccent),
+                        ),
+                        SizedBox(width: 10),
+                        Text(
+                          "Mean Score: ${anime.meanScore}",
+                          style: TextStyle(color: Colors.orangeAccent),
+                        ),
+                      ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "Avg Score: ${anime.averageScore}",
-                            style: TextStyle(color: Colors.orangeAccent),
-                          ),
-                          SizedBox(width: 10),
-                          Text(
-                            "Popularity: ${anime.popularity}",
-                            style: TextStyle(color: Colors.orangeAccent),
-                          ),
-                          SizedBox(width: 10),
-                          Text(
-                            "Mean Score: ${anime.meanScore}",
-                            style: TextStyle(color: Colors.orangeAccent),
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    Row(
+                  ),
+                  SizedBox(height: 10),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color.fromARGB(255, 0, 0, 0),
                           ),
-                          onPressed: () {
-                            // Add to list functionality
-                          },
+                          onPressed: () => _addToFavorites(context),
                           child: Text("Add to List",
                               style: TextStyle(
                                   color: Color.fromARGB(255, 252, 150, 33))),
@@ -101,142 +178,141 @@ class AnimeDetailPage extends StatelessWidget {
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color.fromARGB(255, 0, 0, 0),
                           ),
-                          onPressed: () {
-                            // Review functionality
-                          },
+                          onPressed: () => _showReviewDialog(context),
                           child: Text("Review",
                               style: TextStyle(
                                   color: Color.fromARGB(255, 252, 150, 33))),
                         ),
                       ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: ExpandableText(
-                        anime.description,
-                        expandText: 'Show more',
-                        collapseText: 'Show less',
-                        maxLines: 4,
-                        linkColor: const Color.fromARGB(255, 253, 253, 253),
-                        style: TextStyle(color: Colors.white),
-                      ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: ExpandableText(
+                      anime.description,
+                      expandText: 'show more',
+                      collapseText: 'show less',
+                      maxLines: 4,
+                      linkColor: Colors.blue,
+                      style: TextStyle(color: Colors.white),
                     ),
-                    Divider(color: Colors.grey),
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Series Info",
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
+                  ),
+                  Divider(color: Colors.grey),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Series Info",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                        SizedBox(height: 10),
+                        Text(
+                          "Type",
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          anime.type,
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        SizedBox(height: 10),
+                        Text(
+                          "Episodes",
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          anime.episodes.toString(),
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        SizedBox(height: 10),
+                        Text(
+                          "Runtime",
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          "${anime.runtime} min",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        SizedBox(height: 10),
+                        Text(
+                          "Tags",
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.bold),
+                        ),
+                        Wrap(
+                          spacing: 4.0, // Reduced spacing between chips
+                          runSpacing:
+                              2.0, // Reduced spacing between rows of chips
+                          children: initialTags.map((tag) {
+                            return Chip(
+                              backgroundColor:
+                                  const Color.fromARGB(255, 252, 131, 50),
+                              label: Text(
+                                tag,
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 12),
+                              ),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 8.0,
+                                  vertical: 4.0), // Adjusted padding
+                              elevation: 0, // Removed elevation
+                            );
+                          }).toList(),
+                        ),
+                        if (hiddenTags.isNotEmpty)
+                          ExpandableNotifier(
+                            child: Column(
+                              children: [
+                                Expandable(
+                                  collapsed: Container(),
+                                  expanded: Wrap(
+                                    spacing: 4.0,
+                                    runSpacing: 2.0,
+                                    children: hiddenTags.map((tag) {
+                                      return Chip(
+                                        backgroundColor: const Color.fromARGB(
+                                            255, 252, 131, 50),
+                                        label: Text(
+                                          tag,
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 12),
+                                        ),
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 8.0, vertical: 4.0),
+                                        elevation: 0,
+                                      );
+                                    }).toList(),
+                                  ),
+                                ),
+                                ExpandableButton(
+                                  child: Text(
+                                    hiddenTags.isNotEmpty
+                                        ? 'show more'
+                                        : 'show less',
+                                    style: TextStyle(color: Colors.blue),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                          SizedBox(height: 10),
-                          Text(
-                            "Type",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            anime.type,
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          SizedBox(height: 10),
-                          Text(
-                            "Episodes",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            anime.episodes.toString(),
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          SizedBox(height: 10),
-                          Text(
-                            "Runtime",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            "${anime.runtime} min",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          SizedBox(height: 10),
-                          Text(
-                            "Tags",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          ExpandableTags(tags: anime.tags),
-                        ],
-                      ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),
         ],
       ),
-    );
-  }
-}
-
-class ExpandableTags extends StatefulWidget {
-  final List<String> tags;
-
-  const ExpandableTags({required this.tags});
-
-  @override
-  _ExpandableTagsState createState() => _ExpandableTagsState();
-}
-
-class _ExpandableTagsState extends State<ExpandableTags> {
-  bool isExpanded = false;
-
-  @override
-  Widget build(BuildContext context) {
-    final displayedTags =
-        isExpanded ? widget.tags : widget.tags.take(6).toList();
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Wrap(
-          spacing: 4.0,
-          runSpacing: 2.0,
-          children: displayedTags.map((tag) {
-            return Chip(
-              backgroundColor: const Color.fromARGB(255, 252, 131, 50),
-              label: Text(
-                tag,
-                style: TextStyle(color: Colors.white, fontSize: 12),
-              ),
-              padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-              elevation: 0,
-            );
-          }).toList(),
-        ),
-        GestureDetector(
-          onTap: () {
-            setState(() {
-              isExpanded = !isExpanded;
-            });
-          },
-          child: Text(
-            isExpanded ? 'Show less' : 'Show more',
-            style: TextStyle(color: const Color.fromARGB(255, 255, 255, 255)),
-          ),
-        ),
-      ],
     );
   }
 }

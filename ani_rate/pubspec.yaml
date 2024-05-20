@@ -48,6 +48,8 @@ dependencies:
   http: ^1.2.1
   provider: ^6.1.2
   cached_network_image: ^3.3.1
+  cloud_firestore:
+  expandable: ^5.0.1
 
 dev_dependencies:
   flutter_test:

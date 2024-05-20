@@ -64,6 +64,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '751171755695',
     projectId: 'anirate-12615',
     storageBucket: 'anirate-12615.appspot.com',
+    androidClientId: '751171755695-h2pn1n6eteac4kllp6nh35q3og3da12f.apps.googleusercontent.com',
+    iosClientId: '751171755695-bpvg3so1fa9igge3l0khss8000e043nt.apps.googleusercontent.com',
     iosBundleId: 'com.example.aniRate',
   );
 
@@ -73,6 +75,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '751171755695',
     projectId: 'anirate-12615',
     storageBucket: 'anirate-12615.appspot.com',
+    androidClientId: '751171755695-h2pn1n6eteac4kllp6nh35q3og3da12f.apps.googleusercontent.com',
+    iosClientId: '751171755695-bpvg3so1fa9igge3l0khss8000e043nt.apps.googleusercontent.com',
     iosBundleId: 'com.example.aniRate',
   );
 
@@ -85,4 +89,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'anirate-12615.appspot.com',
     measurementId: 'G-N59EKSJR4J',
   );
+
 }
