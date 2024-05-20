@@ -47,6 +47,7 @@ class AnimeDetailPage extends StatelessWidget {
         'review': review,
         'rating': rating,
         'user': user.email,
+        'userId': user.uid, // Store userId for easier querying
         'timestamp': FieldValue.serverTimestamp(),
       });
       Navigator.pop(context);
@@ -82,7 +83,8 @@ class AnimeDetailPage extends StatelessWidget {
                 direction: Axis.horizontal,
                 allowHalfRating: true,
                 itemCount: 5,
-                itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                itemPadding:
+                    EdgeInsets.symmetric(horizontal: 2.0), // Adjusted padding
                 itemBuilder: (context, _) => Icon(
                   Icons.star,
                   color: Colors.amber,
@@ -338,9 +340,8 @@ class AnimeDetailPage extends StatelessWidget {
                               color: Colors.white, fontWeight: FontWeight.bold),
                         ),
                         Wrap(
-                          spacing: 4.0, // Reduced spacing between chips
-                          runSpacing:
-                              2.0, // Reduced spacing between rows of chips
+                          spacing: 4.0,
+                          runSpacing: 2.0,
                           children: initialTags.map((tag) {
                             return Chip(
                               backgroundColor:
@@ -351,9 +352,8 @@ class AnimeDetailPage extends StatelessWidget {
                                     color: Colors.white, fontSize: 12),
                               ),
                               padding: EdgeInsets.symmetric(
-                                  horizontal: 8.0,
-                                  vertical: 4.0), // Adjusted padding
-                              elevation: 0, // Removed elevation
+                                  horizontal: 8.0, vertical: 4.0),
+                              elevation: 0,
                             );
                           }).toList(),
                         ),
