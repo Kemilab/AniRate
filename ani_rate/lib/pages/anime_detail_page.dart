@@ -57,31 +57,46 @@ class AnimeDetailPage extends StatelessWidget {
   }
 
   void _showReviewDialog(BuildContext context) {
-    final TextEditingController reviewController = TextEditingController();
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text('Submit Review'),
-        content: TextField(
-          controller: reviewController,
-          decoration: InputDecoration(hintText: 'Write your review here...'),
-          maxLines: 5,
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () {
-              _submitReview(context, reviewController.text);
-            },
-            child: Text('Submit'),
-          ),
-        ],
+  final TextEditingController reviewController = TextEditingController();
+  showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      backgroundColor: Color.fromARGB(255, 0, 0, 0),
+      title: const Text(
+        'Submit Review',
+        style: TextStyle(color: Color.fromARGB(255, 252, 131, 50)),
       ),
-    );
-  }
+      content: TextField(
+        controller: reviewController,
+        style: const TextStyle(color: Color.fromARGB(255, 255, 255, 255)), // Set the text color here
+        decoration: const InputDecoration(
+          hintText: 'Write your review here...',
+          hintStyle: TextStyle(color: Color.fromARGB(160, 252, 131, 50)),
+        ),
+        maxLines: 5,
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text(
+            'Cancel',
+            style: TextStyle(color: Color.fromARGB(255, 252, 131, 50)),
+          ),
+        ),
+        TextButton(
+          onPressed: () {
+            _submitReview(context, reviewController.text);
+          },
+          child: const Text(
+            'Submit',
+            style: TextStyle(color: Color.fromARGB(255, 252, 131, 50)),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -190,10 +205,10 @@ class AnimeDetailPage extends StatelessWidget {
                     padding: const EdgeInsets.all(16.0),
                     child: ExpandableText(
                       anime.description,
-                      expandText: 'show more',
-                      collapseText: 'show less',
+                      expandText: 'Show more',
+                      collapseText: 'Show less',
                       maxLines: 4,
-                      linkColor: Colors.blue,
+                      linkColor: Color.fromARGB(255, 255, 255, 255),
                       style: TextStyle(color: Colors.white),
                     ),
                   ),
@@ -296,9 +311,9 @@ class AnimeDetailPage extends StatelessWidget {
                                 ExpandableButton(
                                   child: Text(
                                     hiddenTags.isNotEmpty
-                                        ? 'show more'
-                                        : 'show less',
-                                    style: TextStyle(color: Colors.blue),
+                                        ? 'Show more'
+                                        : 'Show less',
+                                    style: TextStyle(color: const Color.fromARGB(255, 255, 255, 255)),
                                   ),
                                 ),
                               ],
