@@ -84,9 +84,10 @@ class AnimeDetailPage extends StatelessWidget {
                 direction: Axis.horizontal,
                 allowHalfRating: true,
                 itemCount: 5,
+                unratedColor: const Color.fromARGB(255, 255, 255, 255),
                 itemPadding:
-                    EdgeInsets.symmetric(horizontal: 2.0), // Adjusted padding
-                itemBuilder: (context, _) => Icon(
+                    const EdgeInsets.symmetric(horizontal: 2.0), // Adjusted padding
+                itemBuilder: (context, _) => const Icon(
                   Icons.star,
                   color: Colors.amber,
                 ),
@@ -94,7 +95,7 @@ class AnimeDetailPage extends StatelessWidget {
                   rating = newRating;
                 },
               ),
-              SizedBox(height: 16.0),
+              const SizedBox(height: 16.0),
               TextField(
                 controller: reviewController,
                 style:
