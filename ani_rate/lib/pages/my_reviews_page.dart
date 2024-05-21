@@ -54,7 +54,7 @@ class MyReviewsPage extends StatelessWidget {
                           final doc = reviews[index].reference;
                           transaction.delete(doc);
                         });
-
+                    
                         ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(content: Text('Review deleted')));
                       },

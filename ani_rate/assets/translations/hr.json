@@ -8,5 +8,8 @@
   "remove_account": "Izbriši Račun",
   "search_anime": "Pretražite anime..",
   "all_anime": "Svaki anime",
-  "tags": "KLJUČNE RIJEČI"
+  "tags": "KLJUČNE RIJEČI",
+  "forgot_password": "Zaboravili lozinku",
+  "not_a_member": "Registriraj se",
+  "confirm_password": "Potrvdite lozinku"
 }

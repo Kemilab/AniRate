@@ -48,7 +48,7 @@ class AnimeDetailPage extends StatelessWidget {
         'user': user.email,
         'userId': user.uid,
         'animeTitle': anime.englishTitle,
-        'animeImage': anime.bannerImageUrl,
+        'animeImage': anime.coverImageUrl,
         'timestamp': FieldValue.serverTimestamp(),
       });
       Navigator.pop(context);

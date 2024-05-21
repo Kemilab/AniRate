@@ -8,5 +8,8 @@
   "remove_account": "Remove Account",
   "search_anime": "Search anime...",
   "all_anime": "All anime",
-  "tags": "TAGS"
+  "tags": "TAGS",
+  "forgot_password": "Forgot Password",
+  "not_a_member": "Not a member? Register now",
+  "confirm_password": "Confirm Password"
 }

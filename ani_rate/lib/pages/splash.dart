@@ -37,7 +37,7 @@ class SplashScreen extends StatelessWidget {
      // splashTransition: SplashTransition.scaleTransition,
       pageTransitionType: PageTransitionType.leftToRightWithFade,
       animationDuration: const Duration(milliseconds: 1000),
-      backgroundColor: Color.fromRGBO(35, 35, 35, 1),
+      backgroundColor: const Color.fromRGBO(35, 35, 35, 1),
     );
   }
 }
