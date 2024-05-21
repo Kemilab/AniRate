@@ -7,7 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/anime_model.dart';
 import 'my_reviews_page.dart';
-import 'AnimeListByTagPage.dart'; // Ensure this import is correct
+import 'AnimeListByTagPage.dart';
 
 class AnimeDetailPage extends StatefulWidget {
   final Anime anime;
