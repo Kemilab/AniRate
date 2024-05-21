@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:expandable_text/expandable_text.dart';
 
 class MyReviewsPage extends StatelessWidget {
   @override
@@ -18,7 +19,7 @@ class MyReviewsPage extends StatelessWidget {
               stream: FirebaseFirestore.instance
                   .collectionGroup('reviews')
                   .where('userId', isEqualTo: user.uid)
-                  .orderBy('timestamp', descending: true) // Order by timestamp
+                  .orderBy('timestamp', descending: true)
                   .snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
@@ -48,50 +49,76 @@ class MyReviewsPage extends StatelessWidget {
 
                     return Dismissible(
                       key: Key(reviews[index].id),
+                      direction: DismissDirection.endToStart,
                       onDismissed: (direction) {
                         FirebaseFirestore.instance
                             .runTransaction((transaction) async {
                           final doc = reviews[index].reference;
                           transaction.delete(doc);
                         });
-                    
+
                         ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(content: Text('Review deleted')));
                       },
-                      background: Container(color: Colors.red),
+                      background: Container(
+                        alignment: Alignment.centerRight,
+                        padding: EdgeInsets.symmetric(horizontal: 20.0),
+                        color: Colors.red,
+                        child: Icon(Icons.delete, color: Colors.white),
+                      ),
                       child: Card(
                         color: Color.fromRGBO(50, 50, 50, 1),
                         margin: EdgeInsets.all(8.0),
-                        child: ListTile(
-                          leading: animeImage.isNotEmpty
-                              ? CachedNetworkImage(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(8.0),
+                                child: CachedNetworkImage(
                                   imageUrl: animeImage,
                                   placeholder: (context, url) =>
                                       CircularProgressIndicator(),
                                   errorWidget: (context, url, error) =>
                                       Icon(Icons.error),
-                                )
-                              : Icon(Icons.image, color: Colors.white),
-                          title: Text(
-                            animeTitle,
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          subtitle: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                review,
-                                style: TextStyle(color: Colors.white70),
+                                  height: 100,
+                                  width: 70,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
-                              Row(
-                                children: List.generate(5, (index) {
-                                  return Icon(
-                                    index < rating
-                                        ? Icons.star
-                                        : Icons.star_border,
-                                    color: Colors.amber,
-                                  );
-                                }),
+                              SizedBox(width: 8.0),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      animeTitle,
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 16.0,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    ExpandableText(
+                                      review,
+                                      expandText: 'show more',
+                                      collapseText: 'show less',
+                                      maxLines: 2,
+                                      linkColor: Colors.orangeAccent,
+                                      style: TextStyle(color: Colors.white70),
+                                    ),
+                                    Row(
+                                      children: List.generate(5, (index) {
+                                        return Icon(
+                                          index < rating
+                                              ? Icons.star
+                                              : Icons.star_border,
+                                          color: Colors.amber,
+                                        );
+                                      }),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ],
                           ),

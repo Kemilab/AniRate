@@ -85,8 +85,8 @@ class AnimeDetailPage extends StatelessWidget {
                 allowHalfRating: true,
                 itemCount: 5,
                 unratedColor: const Color.fromARGB(255, 255, 255, 255),
-                itemPadding:
-                    const EdgeInsets.symmetric(horizontal: 2.0), // Adjusted padding
+                itemPadding: const EdgeInsets.symmetric(
+                    horizontal: 2.0), // Adjusted padding
                 itemBuilder: (context, _) => const Icon(
                   Icons.star,
                   color: Colors.amber,
