@@ -18,8 +18,21 @@ class AnimeDetailPage extends StatefulWidget {
   _AnimeDetailPageState createState() => _AnimeDetailPageState();
 }
 
-class _AnimeDetailPageState extends State<AnimeDetailPage> {
+class _AnimeDetailPageState extends State<AnimeDetailPage>
+    with SingleTickerProviderStateMixin {
   bool _showAllTags = false;
+  bool _hasReviewed = false;
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _checkIfReviewed().then((value) {
+      setState(() {
+        _hasReviewed = value;
+      });
+    });
+  }
 
   Future<void> _addToFavorites(BuildContext context) async {
     final user = FirebaseAuth.instance.currentUser;
@@ -57,6 +70,9 @@ class _AnimeDetailPageState extends State<AnimeDetailPage> {
         'animeTitle': widget.anime.englishTitle,
         'animeImage': widget.anime.coverImageUrl,
         'timestamp': FieldValue.serverTimestamp(),
+      });
+      setState(() {
+        _hasReviewed = true;
       });
       Navigator.pop(context);
       ScaffoldMessenger.of(context).showSnackBar(
@@ -152,6 +168,21 @@ class _AnimeDetailPageState extends State<AnimeDetailPage> {
     return false;
   }
 
+  void _toggleTags() {
+    setState(() {
+      _showAllTags = !_showAllTags;
+    });
+    if (_showAllTags) {
+      Future.delayed(const Duration(milliseconds: 300), () {
+        _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
+        );
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final List<String> tagsToShow =
@@ -178,6 +209,7 @@ class _AnimeDetailPageState extends State<AnimeDetailPage> {
           // Main content with SafeArea
           SafeArea(
             child: SingleChildScrollView(
+              controller: _scrollController,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -201,24 +233,53 @@ class _AnimeDetailPageState extends State<AnimeDetailPage> {
                       textAlign: TextAlign.center,
                     ),
                   ),
+                  const SizedBox(height: 10),
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Text(
-                          "Avg Score: ${widget.anime.averageScore}",
-                          style: const TextStyle(color: Colors.orangeAccent),
+                        Column(
+                          children: [
+                            Text(
+                              "Avg Score",
+                              style:
+                                  const TextStyle(color: Colors.orangeAccent),
+                            ),
+                            Text(
+                              "${widget.anime.averageScore}",
+                              style:
+                                  const TextStyle(color: Colors.orangeAccent),
+                            ),
+                          ],
                         ),
-                        const SizedBox(width: 10),
-                        Text(
-                          "Popularity: ${widget.anime.popularity}",
-                          style: const TextStyle(color: Colors.orangeAccent),
+                        Column(
+                          children: [
+                            Text(
+                              "Popularity",
+                              style:
+                                  const TextStyle(color: Colors.orangeAccent),
+                            ),
+                            Text(
+                              "${widget.anime.popularity}",
+                              style:
+                                  const TextStyle(color: Colors.orangeAccent),
+                            ),
+                          ],
                         ),
-                        const SizedBox(width: 10),
-                        Text(
-                          "Mean Score: ${widget.anime.meanScore}",
-                          style: const TextStyle(color: Colors.orangeAccent),
+                        Column(
+                          children: [
+                            Text(
+                              "Mean Score",
+                              style:
+                                  const TextStyle(color: Colors.orangeAccent),
+                            ),
+                            Text(
+                              "${widget.anime.meanScore}",
+                              style:
+                                  const TextStyle(color: Colors.orangeAccent),
+                            ),
+                          ],
                         ),
                       ],
                     ),
@@ -229,58 +290,62 @@ class _AnimeDetailPageState extends State<AnimeDetailPage> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color.fromARGB(255, 0, 0, 0),
-                          ),
-                          onPressed: () => _addToFavorites(context),
-                          child: const Text("Add to List",
+                        Expanded(
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor:
+                                  const Color.fromARGB(255, 0, 0, 0),
+                            ),
+                            onPressed: () => _addToFavorites(context),
+                            child: const Text(
+                              "Save",
                               style: TextStyle(
-                                  color: Color.fromARGB(255, 252, 150, 33))),
+                                  color: Color.fromARGB(255, 252, 150, 33)),
+                            ),
+                          ),
                         ),
-                        Text(
-                          "Episodes: ${widget.anime.episodes}",
-                          style: const TextStyle(color: Colors.white),
+                        Expanded(
+                          child: Text(
+                            "Episodes: ${widget.anime.episodes}",
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(color: Colors.white),
+                          ),
                         ),
-                        FutureBuilder<bool>(
-                          future: _checkIfReviewed(),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return const CircularProgressIndicator();
-                            }
-                            if (snapshot.data == true) {
-                              return ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor:
-                                      const Color.fromARGB(255, 0, 0, 0),
-                                ),
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => MyReviewsPage(),
-                                    ),
-                                  );
-                                },
-                                child: const Text("My Review",
+                        Expanded(
+                          child: _hasReviewed
+                              ? ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor:
+                                        const Color.fromARGB(255, 0, 0, 0),
+                                  ),
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => MyReviewsPage(),
+                                      ),
+                                    );
+                                  },
+                                  child: const Text(
+                                    "My Review",
                                     style: TextStyle(
                                         color:
-                                            Color.fromARGB(255, 252, 150, 33))),
-                              );
-                            }
-                            return ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor:
-                                    const Color.fromARGB(255, 0, 0, 0),
-                              ),
-                              onPressed: () => _showReviewDialog(context),
-                              child: const Text("Review",
-                                  style: TextStyle(
-                                      color:
-                                          Color.fromARGB(255, 252, 150, 33))),
-                            );
-                          },
+                                            Color.fromARGB(255, 252, 150, 33)),
+                                  ),
+                                )
+                              : ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor:
+                                        const Color.fromARGB(255, 0, 0, 0),
+                                  ),
+                                  onPressed: () => _showReviewDialog(context),
+                                  child: const Text(
+                                    "Review",
+                                    style: TextStyle(
+                                        color:
+                                            Color.fromARGB(255, 252, 150, 33)),
+                                  ),
+                                ),
                         ),
                       ],
                     ),
@@ -346,65 +411,49 @@ class _AnimeDetailPageState extends State<AnimeDetailPage> {
                           style: TextStyle(
                               color: Colors.white, fontWeight: FontWeight.bold),
                         ),
-                        Wrap(
-                          spacing: 4.0,
-                          runSpacing: 2.0,
-                          children: tagsToShow.map((tag) {
-                            return GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        AnimeListByTagPage(tag: tag),
+                        AnimatedSize(
+                          duration: const Duration(milliseconds: 300),
+                          curve: Curves.easeInOut,
+                          child: Wrap(
+                            spacing: 4.0,
+                            runSpacing: 2.0,
+                            children: tagsToShow.map((tag) {
+                              return GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          AnimeListByTagPage(tag: tag),
+                                    ),
+                                  );
+                                },
+                                child: Chip(
+                                  backgroundColor:
+                                      const Color.fromARGB(255, 252, 131, 50),
+                                  label: Text(
+                                    tag,
+                                    style: const TextStyle(
+                                        color: Colors.white, fontSize: 12),
                                   ),
-                                );
-                              },
-                              child: Chip(
-                                backgroundColor:
-                                    const Color.fromARGB(255, 252, 131, 50),
-                                label: Text(
-                                  tag,
-                                  style: const TextStyle(
-                                      color: Colors.white, fontSize: 12),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0, vertical: 4.0),
+                                  elevation: 0,
                                 ),
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 8.0, vertical: 4.0),
-                                elevation: 0,
-                              ),
-                            );
-                          }).toList(),
+                              );
+                            }).toList(),
+                          ),
                         ),
-                        if (!_showAllTags)
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                _showAllTags = true;
-                              });
-                            },
-                            child: const Text(
-                              'Show more tags',
-                              style: TextStyle(
-                                color: Color.fromARGB(255, 255, 255, 255),
-                                decoration: TextDecoration.underline,
-                              ),
+                        GestureDetector(
+                          onTap: _toggleTags,
+                          child: Text(
+                            _showAllTags ? 'Show less tags' : 'Show more tags',
+                            style: const TextStyle(
+                              color: Color.fromARGB(255, 255, 255, 255),
+                              decoration: TextDecoration.underline,
                             ),
                           ),
-                        if (_showAllTags)
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                _showAllTags = false;
-                              });
-                            },
-                            child: const Text(
-                              'Show less tags',
-                              style: TextStyle(
-                                color: Color.fromARGB(255, 255, 255, 255),
-                                decoration: TextDecoration.underline,
-                              ),
-                            ),
-                          ),
+                        ),
                       ],
                     ),
                   ),
