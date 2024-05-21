@@ -16,56 +16,119 @@ class AnimeProvider with ChangeNotifier {
     if (_isLoading) return;
 
     _isLoading = true;
-    notifyListeners();
 
-    const String url = 'https://graphql.anilist.co';
+    try {
+      const String url = 'https://graphql.anilist.co';
 
-    const query = '''
-      query (\$page: Int, \$perPage: Int) {
-        Page(page: \$page, perPage: \$perPage) {
-          media(type: ANIME, sort: POPULARITY_DESC) {
-            title {
-              romaji
-              english
-            }
-            coverImage {
-              large
-            }
-            bannerImage
-            averageScore
-            popularity
-            meanScore
-            episodes
-            description
-            type
-            duration
-            tags {
-              name
+      const query = '''
+        query (\$page: Int, \$perPage: Int) {
+          Page(page: \$page, perPage: \$perPage) {
+            media(type: ANIME, sort: POPULARITY_DESC) {
+              title {
+                romaji
+                english
+              }
+              coverImage {
+                large
+              }
+              bannerImage
+              averageScore
+              popularity
+              meanScore
+              episodes
+              description
+              type
+              duration
+              tags {
+                name
+              }
             }
           }
         }
+      ''';
+
+      final variables = {'page': _page, 'perPage': 10};
+
+      final response = await http.post(
+        Uri.parse(url),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'query': query, 'variables': variables}),
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        final List<dynamic> fetchedAnime = data['data']['Page']['media'];
+        _animeList =
+            fetchedAnime.map((anime) => Anime.fromJson(anime)).toList();
+        _page++;
+      } else {
+        throw Exception('Failed to fetch anime');
       }
-    ''';
+    } catch (error) {
+      print('Error fetching anime: $error');
+    }
 
-    final variables = {'page': _page, 'perPage': 10};
+    _isLoading = false;
+    notifyListeners();
+  }
 
-    final response = await http.post(
-      Uri.parse(url),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({'query': query, 'variables': variables}),
-    );
+  Future<void> fetchAnimeByTag(String tag) async {
+    if (_isLoading) return;
 
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      final List<dynamic> fetchedAnime = data['data']['Page']['media'];
-      final List<Anime> animeList =
-          fetchedAnime.map((anime) => Anime.fromJson(anime)).toList();
-      _animeList.addAll(animeList);
+    _isLoading = true;
 
-      _page++;
+    try {
+      const String url = 'https://graphql.anilist.co';
+
+      const query = '''
+        query (\$page: Int, \$perPage: Int, \$tag: String) {
+          Page(page: \$page, perPage: \$perPage) {
+            media(type: ANIME, tag: \$tag, sort: POPULARITY_DESC) {
+              title {
+                romaji
+                english
+              }
+              coverImage {
+                large
+              }
+              bannerImage
+              averageScore
+              popularity
+              meanScore
+              episodes
+              description
+              type
+              duration
+              tags {
+                name
+              }
+            }
+          }
+        }
+      ''';
+
+      final variables = {'page': _page, 'perPage': 10, 'tag': tag};
+
+      final response = await http.post(
+        Uri.parse(url),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'query': query, 'variables': variables}),
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        final List<dynamic> fetchedAnime = data['data']['Page']['media'];
+        _animeList =
+            fetchedAnime.map((anime) => Anime.fromJson(anime)).toList();
+      } else {
+        throw Exception('Failed to fetch anime by tag');
+      }
+    } catch (error) {
+      print('Error fetching anime by tag: $error');
     }
 
     _isLoading = false;
     notifyListeners();
   }
 }
+
