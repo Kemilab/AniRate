@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -13,6 +14,20 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   final currentUser = FirebaseAuth.instance.currentUser!;
   bool resetPasswordSuccess = false;
+  String profileImageUrl = "https://www.woolha.com/media/2020/03/eevee.png";
+
+  @override
+  void initState() {
+    super.initState();
+    _loadProfileImage();
+  }
+
+  void _loadProfileImage() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      profileImageUrl = prefs.getString('profileImageUrl') ?? profileImageUrl;
+    });
+  }
 
   void resetPassword() async {
     await FirebaseAuth.instance
@@ -23,8 +38,39 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   void deleteUser() async {
-    //await currentUser.delete();
+    await currentUser.delete();
     FirebaseAuth.instance.signOut();
+  }
+
+  void selectProfileImage() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Select Profile Image'),
+          content: SizedBox(
+            width: double.maxFinite,
+            height: 300.0,
+            child: GridView.count(
+              crossAxisCount: 3,
+              children: List.generate(imageUrls.length, (index) {
+                return GestureDetector(
+                  onTap: () async {
+                    SharedPreferences prefs = await SharedPreferences.getInstance();
+                    await prefs.setString('profileImageUrl', imageUrls[index]);
+                    setState(() {
+                      profileImageUrl = imageUrls[index];
+                    });
+                    Navigator.of(context).pop();
+                  },
+                  child: Image.network(imageUrls[index]),
+                );
+              }),
+            ),
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -34,20 +80,22 @@ class _ProfilePageState extends State<ProfilePage> {
       body: Stack(
         children: [
           Positioned(
-              top: 10.0, // Top position set to 0.0
-              left: 0.0, // Left position set to 0.0
-              right: 0.0, // Right position set to 0.0 (stretch to full width)
-              height: 18.0, // Adjust height as needed
-              child: Center(
-                child: Text(
-                  "account".tr(),
-                  style: GoogleFonts.poppins(
-                      textStyle: const TextStyle(
+            top: 10.0,
+            left: 0.0,
+            right: 0.0,
+            height: 18.0,
+            child: Center(
+              child: Text(
+                "account".tr(),
+                style: GoogleFonts.poppins(
+                  textStyle: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w700,
-                  )),
+                  ),
                 ),
-              )),
+              ),
+            ),
+          ),
           Positioned(
             top: 50.0,
             left: 0.0,
@@ -55,38 +103,44 @@ class _ProfilePageState extends State<ProfilePage> {
             bottom: 0.0,
             child: ListView(
               children: [
-                Container(
-                  height: 80,
-                  decoration: BoxDecoration(
+                GestureDetector(
+                  onTap: selectProfileImage,
+                  child: Container(
+                    height: 80,
+                    decoration: BoxDecoration(
                       color: const Color.fromARGB(176, 63, 61, 61),
-                      borderRadius: BorderRadius.circular(8)),
-                  margin: const EdgeInsets.only(top: 5, left: 25, right: 25),
-                  padding: const EdgeInsets.all(25),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 30,
-                        height: 30,
-                        decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    margin: const EdgeInsets.only(top: 5, left: 25, right: 25),
+                    padding: const EdgeInsets.all(25),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 30,
+                          height: 30,
+                          decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             image: DecorationImage(
-                                image: NetworkImage(
-                                    "https://www.woolha.com/media/2020/03/eevee.png"),
-                                fit: BoxFit.fill)),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 20),
-                        child: Text(
-                          currentUser.email!,
-                          textAlign: TextAlign.center,
-                          style: GoogleFonts.poppins(
-                              textStyle: const TextStyle(
-                            color: Color.fromARGB(255, 211, 205, 205),
-                            fontWeight: FontWeight.w700,
-                          )),
+                              image: NetworkImage(profileImageUrl),
+                              fit: BoxFit.fill,
+                            ),
+                          ),
                         ),
-                      )
-                    ],
+                        Padding(
+                          padding: const EdgeInsets.only(left: 20),
+                          child: Text(
+                            currentUser.email!,
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.poppins(
+                              textStyle: const TextStyle(
+                                color: Color.fromARGB(255, 211, 205, 205),
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 GestureDetector(
@@ -94,15 +148,16 @@ class _ProfilePageState extends State<ProfilePage> {
                   child: Container(
                     height: 50,
                     decoration: BoxDecoration(
-                        color: const Color.fromARGB(176, 63, 61, 61),
-                        borderRadius: BorderRadius.circular(8)),
+                      color: const Color.fromARGB(176, 63, 61, 61),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
                     margin: const EdgeInsets.only(top: 10, left: 25, right: 25),
                     padding: const EdgeInsets.all(5),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "reet_password".tr(),
+                          "reset_password".tr(),
                           style: GoogleFonts.poppins(
                             textStyle: TextStyle(
                               color: resetPasswordSuccess
@@ -123,8 +178,9 @@ class _ProfilePageState extends State<ProfilePage> {
                   child: Container(
                     height: 50,
                     decoration: BoxDecoration(
-                        color: const Color.fromARGB(176, 63, 61, 61),
-                        borderRadius: BorderRadius.circular(8)),
+                      color: const Color.fromARGB(176, 63, 61, 61),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
                     margin: const EdgeInsets.only(top: 10, left: 25, right: 25),
                     padding: const EdgeInsets.all(5),
                     child: Row(
@@ -148,8 +204,9 @@ class _ProfilePageState extends State<ProfilePage> {
                   child: Container(
                     height: 50,
                     decoration: BoxDecoration(
-                        color: const Color.fromARGB(176, 63, 61, 61),
-                        borderRadius: BorderRadius.circular(8)),
+                      color: const Color.fromARGB(176, 63, 61, 61),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
                     margin: const EdgeInsets.only(top: 10, left: 25, right: 25),
                     padding: const EdgeInsets.all(5),
                     child: Row(
@@ -176,3 +233,15 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 }
+const List<String> imageUrls = [
+  "https://www.woolha.com/media/2020/03/eevee.png",
+  "https://wrapime.com/wp-content/uploads/2024/04/one-piece-luffy-gear-five.png",
+  "https://w7.pngwing.com/pngs/490/190/png-transparent-roronoa-zoro-goku-dragon-ball-z-itachi-uchiha-character-goku-television-face-manga-thumbnail.png",
+  "https://image.pngaaa.com/917/2115917-middle.png",
+  "https://i.pinimg.com/564x/93/49/87/93498730955ea119575b1af4cbe6827b.jpg",
+  "https://w7.pngwing.com/pngs/560/93/png-transparent-a-o-t-wings-of-freedom-attack-on-titan-logo-eren-yeager-corps.png",
+  "https://m.media-amazon.com/images/I/51s66WF9hjL.jpg",
+  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2yCXpXJ66Mydkn32palBRezCPgYJ1NWuQxGW3k72dwA&s",
+  "https://www.pngall.com/wp-content/uploads/13/Anime-Logo-PNG-Cutout.png",
+  "https://m.media-amazon.com/images/I/71EafIm1NdL._AC_UF1000,1000_QL80_.jpg",
+];

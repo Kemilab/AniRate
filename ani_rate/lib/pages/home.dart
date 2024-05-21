@@ -1,12 +1,33 @@
-import 'package:ani_rate/pages/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:ani_rate/pages/profile_page.dart';
 import '../models/anime_model.dart';
 import '../providers/anime_provider.dart';
 import 'anime_detail_page.dart';
 
-class MyHomeScreen extends StatelessWidget {
+class MyHomeScreen extends StatefulWidget {
+  @override
+  _MyHomeScreenState createState() => _MyHomeScreenState();
+}
+
+class _MyHomeScreenState extends State<MyHomeScreen> {
+  String profileImageUrl = "https://www.woolha.com/media/2020/03/eevee.png";
+
+  @override
+  void initState() {
+    super.initState();
+    _loadProfileImage();
+  }
+
+  void _loadProfileImage() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      profileImageUrl = prefs.getString('profileImageUrl') ?? profileImageUrl;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,11 +40,12 @@ class MyHomeScreen extends StatelessWidget {
                 showModalBottomSheet(
                   context: context,
                   builder: (context) => ProfilePage(),
-                );
+                ).then((_) {
+                  _loadProfileImage(); // Reload the profile image after returning from ProfilePage
+                });
               },
-              child: const CircleAvatar(
-                backgroundImage: NetworkImage(
-                    'https://www.woolha.com/media/2020/03/eevee.png'), // Replace with actual profile image URL
+              child: CircleAvatar(
+                backgroundImage: NetworkImage(profileImageUrl),
               ),
             ),
             const SizedBox(width: 10),
