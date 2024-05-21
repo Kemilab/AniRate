@@ -69,7 +69,7 @@ class _AnimeListByTagPageState extends State<AnimeListByTagPage> {
       ),
       body: Consumer<AnimeProvider>(
         builder: (context, animeProvider, _) {
-          final animeList = animeProvider.animeList;
+          final animeList = animeProvider.animeList.where((anime) => anime.tags.contains(widget.tag)).toList();
           final hasMore = animeProvider.hasMore;
 
           return GridView.builder(
