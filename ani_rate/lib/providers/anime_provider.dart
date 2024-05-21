@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:ani_rate/services/anime_service.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../models/anime_model.dart';
@@ -14,6 +15,12 @@ class AnimeProvider with ChangeNotifier {
   bool _hasMore = true;
 
   bool get hasMore => _hasMore;
+
+final AnimeService _animeService = AnimeService();
+
+  AnimeProvider() {
+    fetchAnime();
+  }
 
   Future<void> fetchAnime() async {
     if (_isLoading || !_hasMore) return;
@@ -76,6 +83,20 @@ class AnimeProvider with ChangeNotifier {
       }
     } catch (error) {
       print('Error fetching anime: $error');
+    }
+
+    _isLoading = false;
+    notifyListeners();
+  }
+
+ Future<void> searchAnime(String query) async {
+    _isLoading = true;
+    notifyListeners();
+
+    try {
+      _animeList = await _animeService.searchAnime(query);
+    } catch (error) {
+      print('Error searching anime: $error');
     }
 
     _isLoading = false;
@@ -160,5 +181,4 @@ class AnimeProvider with ChangeNotifier {
 
 
 }
-
 
