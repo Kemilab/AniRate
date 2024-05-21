@@ -1,8 +1,7 @@
 import 'dart:ui';
+import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:expandable_text/expandable_text.dart';
-import 'package:expandable/expandable.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -10,10 +9,17 @@ import '../models/anime_model.dart';
 import 'my_reviews_page.dart';
 import 'AnimeListByTagPage.dart'; // Ensure this import is correct
 
-class AnimeDetailPage extends StatelessWidget {
+class AnimeDetailPage extends StatefulWidget {
   final Anime anime;
 
   const AnimeDetailPage({required this.anime});
+
+  @override
+  _AnimeDetailPageState createState() => _AnimeDetailPageState();
+}
+
+class _AnimeDetailPageState extends State<AnimeDetailPage> {
+  bool _showAllTags = false;
 
   Future<void> _addToFavorites(BuildContext context) async {
     final user = FirebaseAuth.instance.currentUser;
@@ -22,8 +28,8 @@ class AnimeDetailPage extends StatelessWidget {
           .collection('users')
           .doc(user.uid)
           .collection('favorites')
-          .doc(anime.title);
-      await favoriteRef.set(anime.toJson());
+          .doc(widget.anime.title);
+      await favoriteRef.set(widget.anime.toJson());
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Added to favorites!')),
       );
@@ -40,7 +46,7 @@ class AnimeDetailPage extends StatelessWidget {
     if (user != null) {
       final reviewsRef = FirebaseFirestore.instance
           .collection('anime')
-          .doc(anime.title)
+          .doc(widget.anime.title)
           .collection('reviews')
           .doc(user.uid);
       await reviewsRef.set({
@@ -48,8 +54,8 @@ class AnimeDetailPage extends StatelessWidget {
         'rating': rating,
         'user': user.email,
         'userId': user.uid,
-        'animeTitle': anime.englishTitle,
-        'animeImage': anime.coverImageUrl,
+        'animeTitle': widget.anime.englishTitle,
+        'animeImage': widget.anime.coverImageUrl,
         'timestamp': FieldValue.serverTimestamp(),
       });
       Navigator.pop(context);
@@ -138,7 +144,7 @@ class AnimeDetailPage extends StatelessWidget {
     if (user != null) {
       final reviewDoc = await FirebaseFirestore.instance
           .collection('anime')
-          .doc(anime.title)
+          .doc(widget.anime.title)
           .collection('reviews')
           .doc(user.uid)
           .get();
@@ -149,6 +155,9 @@ class AnimeDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final List<String> tagsToShow =
+        _showAllTags ? widget.anime.tags : widget.anime.tags.take(3).toList();
+
     return Scaffold(
       body: Stack(
         children: [
@@ -157,40 +166,41 @@ class AnimeDetailPage extends StatelessWidget {
             child: ImageFiltered(
               imageFilter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
               child: CachedNetworkImage(
-                imageUrl: anime.bannerImageUrl,
+                imageUrl: widget.anime.bannerImageUrl,
                 fit: BoxFit.cover,
               ),
             ),
           ),
           // Dark overlay
-          Positioned.fill(
-            child: Container(
-              color: Colors.black.withOpacity(0.5),
-            ),
+          Container(
+            color: Colors.black.withOpacity(0.5),
+            constraints: const BoxConstraints.expand(),
           ),
           // Main content with SafeArea
           SafeArea(
             child: SingleChildScrollView(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   CachedNetworkImage(
-                    imageUrl: anime.bannerImageUrl,
+                    imageUrl: widget.anime.bannerImageUrl,
                     fit: BoxFit.cover,
-                    width: double.infinity,
                     height: 200,
                   ),
                   const SizedBox(height: 20),
-                  Text(
-                    anime.englishTitle.isNotEmpty
-                        ? anime.englishTitle
-                        : anime.title,
-                    style: const TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Text(
+                      widget.anime.englishTitle.isNotEmpty
+                          ? widget.anime.englishTitle
+                          : widget.anime.title,
+                      style: const TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                      textAlign: TextAlign.center,
                     ),
-                    textAlign: TextAlign.center,
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -198,17 +208,17 @@ class AnimeDetailPage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "Avg Score: ${anime.averageScore}",
+                          "Avg Score: ${widget.anime.averageScore}",
                           style: const TextStyle(color: Colors.orangeAccent),
                         ),
                         const SizedBox(width: 10),
                         Text(
-                          "Popularity: ${anime.popularity}",
+                          "Popularity: ${widget.anime.popularity}",
                           style: const TextStyle(color: Colors.orangeAccent),
                         ),
                         const SizedBox(width: 10),
                         Text(
-                          "Mean Score: ${anime.meanScore}",
+                          "Mean Score: ${widget.anime.meanScore}",
                           style: const TextStyle(color: Colors.orangeAccent),
                         ),
                       ],
@@ -230,7 +240,7 @@ class AnimeDetailPage extends StatelessWidget {
                                   color: Color.fromARGB(255, 252, 150, 33))),
                         ),
                         Text(
-                          "Episodes: ${anime.episodes}",
+                          "Episodes: ${widget.anime.episodes}",
                           style: const TextStyle(color: Colors.white),
                         ),
                         FutureBuilder<bool>(
@@ -279,7 +289,7 @@ class AnimeDetailPage extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: ExpandableText(
-                      anime.description,
+                      widget.anime.description,
                       expandText: 'Show more',
                       collapseText: 'Show less',
                       maxLines: 4,
@@ -308,7 +318,7 @@ class AnimeDetailPage extends StatelessWidget {
                               color: Colors.white, fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          anime.type,
+                          widget.anime.type,
                           style: const TextStyle(color: Colors.white),
                         ),
                         const SizedBox(height: 10),
@@ -318,7 +328,7 @@ class AnimeDetailPage extends StatelessWidget {
                               color: Colors.white, fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          anime.episodes.toString(),
+                          widget.anime.episodes.toString(),
                           style: const TextStyle(color: Colors.white),
                         ),
                         const SizedBox(height: 10),
@@ -328,7 +338,7 @@ class AnimeDetailPage extends StatelessWidget {
                               color: Colors.white, fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          "${anime.runtime} min",
+                          "${widget.anime.runtime} min",
                           style: const TextStyle(color: Colors.white),
                         ),
                         const SizedBox(height: 10),
@@ -340,7 +350,7 @@ class AnimeDetailPage extends StatelessWidget {
                         Wrap(
                           spacing: 4.0,
                           runSpacing: 2.0,
-                          children: anime.tags.map((tag) {
+                          children: tagsToShow.map((tag) {
                             return GestureDetector(
                               onTap: () {
                                 Navigator.push(
@@ -362,6 +372,36 @@ class AnimeDetailPage extends StatelessWidget {
                             );
                           }).toList(),
                         ),
+                        if (!_showAllTags)
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _showAllTags = true;
+                              });
+                            },
+                            child: const Text(
+                              'Show more tags',
+                              style: TextStyle(
+                                color: Color.fromARGB(255, 255, 255, 255),
+                                decoration: TextDecoration.underline,
+                              ),
+                            ),
+                          ),
+                        if (_showAllTags)
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _showAllTags = false;
+                              });
+                            },
+                            child: const Text(
+                              'Show less tags',
+                              style: TextStyle(
+                                color: Color.fromARGB(255, 255, 255, 255),
+                                decoration: TextDecoration.underline,
+                              ),
+                            ),
+                          ),
                       ],
                     ),
                   ),
