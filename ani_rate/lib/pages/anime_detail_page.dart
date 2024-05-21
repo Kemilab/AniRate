@@ -1,12 +1,11 @@
 import 'dart:ui';
-import 'package:ani_rate/pages/AnimeListByTagPage.dart';
-import 'package:expandable/expandable.dart';
+import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:expandable/expandable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:expandable_text/expandable_text.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import '../models/anime_model.dart';
 import 'my_reviews_page.dart';
 
@@ -47,7 +46,9 @@ class AnimeDetailPage extends StatelessWidget {
         'review': review,
         'rating': rating,
         'user': user.email,
-        'userId': user.uid, // Store userId for easier querying
+        'userId': user.uid,
+        'animeTitle': anime.englishTitle,
+        'animeImage': anime.bannerImageUrl,
         'timestamp': FieldValue.serverTimestamp(),
       });
       Navigator.pop(context);
@@ -343,28 +344,13 @@ class AnimeDetailPage extends StatelessWidget {
                           spacing: 4.0,
                           runSpacing: 2.0,
                           children: initialTags.map((tag) {
-                            return GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        AnimeListByTagPage(tag: tag),
-                                  ),
-                                );
-                              },
-                              child: Chip(
-                                backgroundColor:
-                                    const Color.fromARGB(255, 252, 131, 50),
-                                label: Text(
-                                  tag,
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 12),
-                                ),
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 8.0,
-                                    vertical: 4.0), // Adjusted padding
-                                elevation: 0, // Removed elevation
+                            return Chip(
+                              backgroundColor:
+                                  const Color.fromARGB(255, 252, 131, 50),
+                              label: Text(
+                                tag,
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 12),
                               ),
                               padding: EdgeInsets.symmetric(
                                   horizontal: 8.0, vertical: 4.0),
@@ -382,29 +368,18 @@ class AnimeDetailPage extends StatelessWidget {
                                     spacing: 4.0,
                                     runSpacing: 2.0,
                                     children: hiddenTags.map((tag) {
-                                      return GestureDetector(
-                                        onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  AnimeListByTagPage(tag: tag),
-                                            ),
-                                          );
-                                        },
-                                        child: Chip(
-                                          backgroundColor: const Color.fromARGB(
-                                              255, 252, 131, 50),
-                                          label: Text(
-                                            tag,
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 12),
-                                          ),
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 8.0, vertical: 4.0),
-                                          elevation: 0,
+                                      return Chip(
+                                        backgroundColor: const Color.fromARGB(
+                                            255, 252, 131, 50),
+                                        label: Text(
+                                          tag,
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 12),
                                         ),
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 8.0, vertical: 4.0),
+                                        elevation: 0,
                                       );
                                     }).toList(),
                                   ),
