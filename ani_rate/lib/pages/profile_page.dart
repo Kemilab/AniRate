@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'my_saves_page.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -38,8 +39,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   void deleteUser() async {
-    await currentUser.delete();
-    FirebaseAuth.instance.signOut();
+    await FirebaseAuth.instance.signOut();
   }
 
   void selectProfileImage() {
@@ -56,7 +56,8 @@ class _ProfilePageState extends State<ProfilePage> {
               children: List.generate(imageUrls.length, (index) {
                 return GestureDetector(
                   onTap: () async {
-                    SharedPreferences prefs = await SharedPreferences.getInstance();
+                    SharedPreferences prefs =
+                        await SharedPreferences.getInstance();
                     await prefs.setString('profileImageUrl', imageUrls[index]);
                     setState(() {
                       profileImageUrl = imageUrls[index];
@@ -173,7 +174,10 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    context.setLocale(Locale('hr'));
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => MySavesPage()),
+                    );
                   },
                   child: Container(
                     height: 50,
@@ -187,7 +191,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "change_language".tr(),
+                          "view_my_saves".tr(),
                           style: GoogleFonts.poppins(
                             textStyle: const TextStyle(
                               color: Color.fromARGB(255, 8, 235, 178),
@@ -213,7 +217,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "remove_account".tr(),
+                          "log_out".tr(),
                           style: GoogleFonts.poppins(
                             textStyle: const TextStyle(
                               color: Color.fromARGB(255, 255, 0, 0),
@@ -233,6 +237,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 }
+
 const List<String> imageUrls = [
   "https://www.woolha.com/media/2020/03/eevee.png",
   "https://wrapime.com/wp-content/uploads/2024/04/one-piece-luffy-gear-five.png",

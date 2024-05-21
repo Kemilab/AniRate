@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -44,7 +45,7 @@ class _AnimeDetailPageState extends State<AnimeDetailPage>
           .doc(widget.anime.title);
       await favoriteRef.set(widget.anime.toJson());
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Added to favorites!')),
+        SnackBar(content: Text('added_to_favorites'.tr())),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -75,9 +76,8 @@ class _AnimeDetailPageState extends State<AnimeDetailPage>
         _hasReviewed = true;
       });
       Navigator.pop(context);
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Review submitted!')),
-      );
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('review_submitted'.tr())));
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please log in first')),

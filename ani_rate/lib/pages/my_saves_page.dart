@@ -5,12 +5,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
-class MyReviewsPage extends StatefulWidget {
+import '../models/anime_model.dart';
+import 'anime_detail_page.dart';
+
+class MySavesPage extends StatefulWidget {
   @override
-  _MyReviewsPageState createState() => _MyReviewsPageState();
+  _MySavesPageState createState() => _MySavesPageState();
 }
 
-class _MyReviewsPageState extends State<MyReviewsPage> {
+class _MySavesPageState extends State<MySavesPage> {
   @override
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser;
@@ -18,7 +21,7 @@ class _MyReviewsPageState extends State<MyReviewsPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'my_reviews'.tr(),
+          'my_saves'.tr(),
           style: const TextStyle(color: Color.fromARGB(255, 252, 131, 50)),
         ),
         backgroundColor: const Color.fromRGBO(35, 35, 35, 1),
@@ -28,29 +31,25 @@ class _MyReviewsPageState extends State<MyReviewsPage> {
       body: user != null
           ? Stack(
               children: [
-                // Background image with blur effect
                 Container(
                   decoration: const BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage(
-                          'assets/background.png'), // Replace with your image path
+                      image: AssetImage('assets/background.png'),
                       fit: BoxFit.cover,
                     ),
                   ),
                   child: BackdropFilter(
                     filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
                     child: Container(
-                      color: Colors.black.withOpacity(
-                          0), // Transparent color to apply the blur
+                      color: Colors.black.withOpacity(0),
                     ),
                   ),
                 ),
-                // Foreground content
                 StreamBuilder<QuerySnapshot>(
                   stream: FirebaseFirestore.instance
-                      .collectionGroup('reviews')
-                      .where('userId', isEqualTo: user.uid)
-                      .orderBy('timestamp', descending: true)
+                      .collection('users')
+                      .doc(user.uid)
+                      .collection('favorites')
                       .snapshots(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
@@ -60,26 +59,20 @@ class _MyReviewsPageState extends State<MyReviewsPage> {
                       return Center(child: Text('error_occurred'.tr()));
                     }
                     if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                      return Center(child: Text('no_reviews_found'.tr()));
+                      return Center(child: Text('no_saves_found'.tr()));
                     }
 
-                    final reviews = snapshot.data!.docs;
+                    final savedAnimes = snapshot.data!.docs;
 
                     return ListView.builder(
-                      itemCount: reviews.length,
+                      itemCount: savedAnimes.length,
                       itemBuilder: (context, index) {
-                        final reviewData =
-                            reviews[index].data() as Map<String, dynamic>;
-                        final review =
-                            reviewData['review'] as String? ?? 'No review';
-                        final rating = reviewData['rating']?.toDouble() ?? 0.0;
-                        final animeTitle =
-                            reviewData['animeTitle'] as String? ?? 'No title';
-                        final animeImage =
-                            reviewData['animeImage'] as String? ?? '';
+                        final animeData =
+                            savedAnimes[index].data() as Map<String, dynamic>;
+                        final anime = Anime.fromJson(animeData);
 
                         return Dismissible(
-                          key: Key(reviews[index].id),
+                          key: Key(savedAnimes[index].id),
                           direction: DismissDirection.endToStart,
                           background: Container(
                             color: Colors.red,
@@ -88,15 +81,15 @@ class _MyReviewsPageState extends State<MyReviewsPage> {
                             child: Icon(Icons.delete, color: Colors.white),
                           ),
                           onDismissed: (direction) async {
-                            final docReference = reviews[index].reference;
-                            final removedReview = reviews[index];
+                            final docReference = savedAnimes[index].reference;
+                            final removedAnime = savedAnimes[index];
 
                             // Capture the context
                             final snackBarContext = context;
 
                             // Remove the item from the list immediately
                             setState(() {
-                              reviews.removeAt(index);
+                              savedAnimes.removeAt(index);
                             });
 
                             try {
@@ -108,12 +101,12 @@ class _MyReviewsPageState extends State<MyReviewsPage> {
                               ScaffoldMessenger.of(snackBarContext)
                                   .showSnackBar(
                                 SnackBar(
-                                  content: Text('review_deleted'.tr()),
+                                  content: Text('save_deleted'.tr()),
                                   action: SnackBarAction(
                                     label: 'UNDO',
                                     onPressed: () {
                                       setState(() {
-                                        reviews.insert(index, removedReview);
+                                        savedAnimes.insert(index, removedAnime);
                                       });
                                     },
                                   ),
@@ -122,7 +115,7 @@ class _MyReviewsPageState extends State<MyReviewsPage> {
                             } catch (e) {
                               // Re-insert the item in case of error
                               setState(() {
-                                reviews.insert(index, removedReview);
+                                savedAnimes.insert(index, removedAnime);
                               });
 
                               ScaffoldMessenger.of(snackBarContext)
@@ -137,9 +130,9 @@ class _MyReviewsPageState extends State<MyReviewsPage> {
                             color: const Color.fromRGBO(50, 50, 50, 1),
                             margin: const EdgeInsets.all(8.0),
                             child: ListTile(
-                              leading: animeImage.isNotEmpty
+                              leading: anime.coverImageUrl.isNotEmpty
                                   ? CachedNetworkImage(
-                                      imageUrl: animeImage,
+                                      imageUrl: anime.coverImageUrl,
                                       placeholder: (context, url) =>
                                           const CircularProgressIndicator(),
                                       errorWidget: (context, url, error) =>
@@ -148,21 +141,21 @@ class _MyReviewsPageState extends State<MyReviewsPage> {
                                   : const Icon(Icons.image,
                                       color: Colors.white),
                               title: Text(
-                                animeTitle,
+                                anime.title,
                                 style: const TextStyle(color: Colors.white),
                               ),
                               subtitle: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    review,
+                                    anime.englishTitle,
                                     style:
                                         const TextStyle(color: Colors.white70),
                                   ),
                                   Row(
                                     children: List.generate(5, (index) {
                                       return Icon(
-                                        index < rating
+                                        index < (anime.meanScore / 20).round()
                                             ? Icons.star
                                             : Icons.star_border,
                                         color: Colors.amber,
@@ -171,6 +164,15 @@ class _MyReviewsPageState extends State<MyReviewsPage> {
                                   ),
                                 ],
                               ),
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        AnimeDetailPage(anime: anime),
+                                  ),
+                                );
+                              },
                             ),
                           ),
                         );

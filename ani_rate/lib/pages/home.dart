@@ -55,14 +55,18 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
                   Provider.of<AnimeProvider>(context, listen: false)
                       .searchAnime(query);
                 },
-                style: const TextStyle(color: Color.fromARGB(255, 255, 119, 29)),
+                style:
+                    const TextStyle(color: Color.fromARGB(255, 255, 119, 29)),
                 decoration: InputDecoration(
                   hintText: 'Search anime...',
-                  hintStyle: const TextStyle(color: Color.fromARGB(255, 255, 119, 29)),
-                  prefixIcon: const Icon(Icons.search, color: Color.fromARGB(255, 255, 119, 29)),
+                  hintStyle:
+                      const TextStyle(color: Color.fromARGB(255, 255, 119, 29)),
+                  prefixIcon: const Icon(Icons.search,
+                      color: Color.fromARGB(255, 255, 119, 29)),
                   enabledBorder: UnderlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
-                    borderSide: const BorderSide(color: Color.fromARGB(255, 255, 119, 29)),
+                    borderSide: const BorderSide(
+                        color: Color.fromARGB(255, 255, 119, 29)),
                   ),
                   focusedBorder: UnderlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
@@ -89,7 +93,8 @@ class AnimeGridView extends StatelessWidget {
       builder: (context, animeProvider, child) {
         if (animeProvider.isLoading && animeProvider.animeList.isEmpty) {
           return const Center(
-            child: CircularProgressIndicator(color: Color.fromARGB(255, 252, 131, 50)),
+            child: CircularProgressIndicator(
+                color: Color.fromARGB(255, 252, 131, 50)),
           );
         }
 
@@ -129,7 +134,8 @@ class AnimeGridView extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
                     child: CachedNetworkImage(
                       imageUrl: anime.coverImageUrl,
-                      placeholder: (context, url) => Center(child: CircularProgressIndicator()),
+                      placeholder: (context, url) =>
+                          Center(child: CircularProgressIndicator()),
                       errorWidget: (context, url, error) => Icon(Icons.error),
                       fit: BoxFit.cover,
                       width: double.infinity,

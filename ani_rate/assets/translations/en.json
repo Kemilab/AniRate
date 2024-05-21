@@ -21,5 +21,14 @@
   "tags": "Tags",
   "type": "Type",
   "not_a_member": "Not a member?",
-  "already_a_member": "Already a member?"
+  "already_a_member": "Already a member?",
+  "added_to_favorites": "Added to favorites!",
+  "review_submitted": "Review submitted!",
+  "no_reviews_found": "No reviews found",
+  "my_reviews": "My Reviews",
+  "review_deleted": "Review deleted",
+  "delete_failed": "Failed to delete review",
+  "please_log_in": "Please log in to see your reviews",
+  "view_my_saves": "My Saves",
+  "log_out": "LOG OUT"
 }

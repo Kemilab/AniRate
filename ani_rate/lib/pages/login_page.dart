@@ -2,7 +2,6 @@ import 'package:ani_rate/components/my_button.dart';
 import 'package:ani_rate/components/my_textfield.dart';
 import 'package:ani_rate/components/square_tile.dart';
 import 'package:ani_rate/services/auth_services.dart';
-import 'package:ani_rate/translations/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -139,20 +138,20 @@ class _LoginPageState extends State<LoginPage> {
                     //password
                     MyTextFiled(
                       controller: passwordController,
-                      hintText: "Password",
+                      hintText: ('password'.tr()),
                       obscureText: true,
                     ),
 
                     const SizedBox(height: 10),
 
                     //forgot
-                    const Padding(
+                    Padding(
                       padding: EdgeInsets.symmetric(horizontal: 25.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           Text(
-                            "Forgot Password?",
+                            ('forgot_password'.tr()),
                             style: TextStyle(
                                 color: Color.fromRGBO(255, 240, 0, 1)),
                           ),
@@ -164,7 +163,7 @@ class _LoginPageState extends State<LoginPage> {
 
                     //signin
                     MyButton(
-                      text: LocaleKeys.login.tr(),
+                      text: ('login'.tr()),
                       onTap: signUserIn,
                     ),
 
@@ -229,8 +228,8 @@ class _LoginPageState extends State<LoginPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text(
-                          "Not a member?",
+                        Text(
+                          ('not_a_member'.tr()),
                           style: TextStyle(
                               color: Color.fromARGB(255, 245, 118, 14),
                               fontWeight: FontWeight.bold),
@@ -238,8 +237,8 @@ class _LoginPageState extends State<LoginPage> {
                         const SizedBox(width: 4),
                         GestureDetector(
                           onTap: widget.onTap,
-                          child: const Text(
-                            "Register now",
+                          child: Text(
+                            ('register_now'.tr()),
                             style: TextStyle(
                                 color: Colors.blue,
                                 fontWeight: FontWeight.bold),

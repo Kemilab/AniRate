@@ -2,6 +2,7 @@ import 'package:ani_rate/components/my_button.dart';
 import 'package:ani_rate/components/my_textfield.dart';
 import 'package:ani_rate/components/square_tile.dart';
 import 'package:ani_rate/services/auth_services.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -149,7 +150,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     //password
                     MyTextFiled(
                       controller: passwordController,
-                      hintText: "Password",
+                      hintText: ('password'.tr()),
                       obscureText: true,
                     ),
 
@@ -158,7 +159,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     //confirm password
                     MyTextFiled(
                       controller: confirmPasswordController,
-                      hintText: "Confirm Password",
+                      hintText: ('confirm_password'.tr()),
                       obscureText: true,
                     ),
 
@@ -168,7 +169,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
                     //signUp
                     MyButton(
-                      text: "Sign Up",
+                      text: ('sign_up'.tr()),
                       onTap: signUserUp,
                     ),
 
@@ -234,7 +235,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "Already a member?",
+                          ('already_a_member'.tr()),
                           style: TextStyle(
                               color: Color.fromARGB(255, 245, 118, 14),
                               fontWeight: FontWeight.bold),
@@ -243,7 +244,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         GestureDetector(
                           onTap: widget.onTap,
                           child: Text(
-                            "Login now",
+                            ('login'.tr()),
                             style: TextStyle(
                                 color: Colors.blue,
                                 fontWeight: FontWeight.bold),

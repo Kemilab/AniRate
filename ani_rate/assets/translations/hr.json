@@ -21,5 +21,14 @@
   "tags": "KLJUČNE RIJEČI",
   "type": "Vrsta",
   "not_a_member": "Nisi član?",
-  "already_a_member": "Več si član?"
+  "already_a_member": "Več si član?",
+  "added_to_favorites": "Dodano u favorite!",
+  "review_submitted": "Recenzija spremljena!",
+  "no_reviews_found": "Nema recenzija",
+  "my_reviews": "Moje recenzije",
+  "review_deleted": "Obrisano",
+  "delete_failed": "Pogreška",
+  "please_log_in": "Molimo ulogiraj se",
+  "view_my_saves": "Spremljeni anime",
+  "log_out": "Odjavi se"
 }
