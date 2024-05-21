@@ -295,57 +295,57 @@ class _AnimeDetailPageState extends State<AnimeDetailPage>
                             style: ElevatedButton.styleFrom(
                               backgroundColor:
                                   const Color.fromARGB(255, 0, 0, 0),
+                              minimumSize:
+                                  Size(0, 36), // Adjust the height as needed
                             ),
                             onPressed: () => _addToFavorites(context),
-                            child: const Text(
-                              "Save",
-                              style: TextStyle(
-                                  color: Color.fromARGB(255, 252, 150, 33)),
+                            child: const FittedBox(
+                              fit: BoxFit.scaleDown,
+                              child: Text(
+                                "Save",
+                                style: TextStyle(
+                                    color: Color.fromARGB(255, 252, 150, 33)),
+                              ),
                             ),
                           ),
                         ),
                         Expanded(
-                          child: Text(
-                            "Episodes: ${widget.anime.episodes}",
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(color: Colors.white),
+                          child: Center(
+                            child: Text(
+                              "Episodes: ${widget.anime.episodes}",
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(color: Colors.white),
+                            ),
                           ),
                         ),
                         Expanded(
-                          child: _hasReviewed
-                              ? ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor:
-                                        const Color.fromARGB(255, 0, 0, 0),
-                                  ),
-                                  onPressed: () {
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor:
+                                  const Color.fromARGB(255, 0, 0, 0),
+                              minimumSize:
+                                  Size(0, 36), // Adjust the height as needed
+                            ),
+                            onPressed: _hasReviewed
+                                ? () {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) => MyReviewsPage(),
                                       ),
                                     );
-                                  },
-                                  child: const Text(
-                                    "My Review",
-                                    style: TextStyle(
-                                        color:
-                                            Color.fromARGB(255, 252, 150, 33)),
-                                  ),
-                                )
-                              : ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor:
-                                        const Color.fromARGB(255, 0, 0, 0),
-                                  ),
-                                  onPressed: () => _showReviewDialog(context),
-                                  child: const Text(
-                                    "Review",
-                                    style: TextStyle(
-                                        color:
-                                            Color.fromARGB(255, 252, 150, 33)),
-                                  ),
+                                  }
+                                : () => _showReviewDialog(context),
+                            child: FittedBox(
+                              fit: BoxFit.scaleDown,
+                              child: Text(
+                                _hasReviewed ? "My Review" : "Review",
+                                style: const TextStyle(
+                                  color: Color.fromARGB(255, 252, 150, 33),
                                 ),
+                              ),
+                            ),
+                          ),
                         ),
                       ],
                     ),
