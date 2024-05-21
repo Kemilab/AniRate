@@ -65,50 +65,55 @@ class _AnimeListByTagPageState extends State<AnimeListByTagPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Anime List - ${widget.tag}'),
+        title: Text('Anime List - ${widget.tag}', style: const TextStyle(color: Color.fromARGB(255, 255, 119, 29))),
+        backgroundColor: const Color.fromRGBO(35, 35, 35, 1),
+        iconTheme: const IconThemeData(color: Color.fromARGB(255, 255, 119, 29)),
       ),
-      body: Consumer<AnimeProvider>(
-        builder: (context, animeProvider, _) {
-          final animeList = animeProvider.animeList.where((anime) => anime.tags.contains(widget.tag)).toList();
-          final hasMore = animeProvider.hasMore;
+      body: Container(
+        color: const Color.fromRGBO(35, 35, 35, 1), // Change the background color here
+        child: Consumer<AnimeProvider>(
+          builder: (context, animeProvider, _) {
+            final animeList = animeProvider.animeList.where((anime) => anime.tags.contains(widget.tag)).toList();
+            final hasMore = animeProvider.hasMore;
 
-          return GridView.builder(
-            controller: _scrollController,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              crossAxisSpacing: 8.0,
-              mainAxisSpacing: 8.0,
-            ),
-            itemCount: animeList.length + (hasMore ? 1 : 0),
-            itemBuilder: (context, index) {
-              if (index == animeList.length) {
-                return Center(child: CircularProgressIndicator());
-              }
+            return GridView.builder(
+              controller: _scrollController,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 8.0,
+                mainAxisSpacing: 8.0,
+              ),
+              itemCount: animeList.length + (hasMore ? 1 : 0),
+              itemBuilder: (context, index) {
+                if (index == animeList.length) {
+                  return Center(child: CircularProgressIndicator());
+                }
 
-              final anime = animeList[index];
-              return GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => AnimeDetailPage(anime: anime),
-                    ),
-                  );
-                },
-                child: Card(
-                  elevation: 4.0,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(8.0),
-                    child: CachedNetworkImage(
-                      imageUrl: anime.coverImageUrl,
-                      fit: BoxFit.cover,
+                final anime = animeList[index];
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AnimeDetailPage(anime: anime),
+                      ),
+                    );
+                  },
+                  child: Card(
+                    elevation: 4.0,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8.0),
+                      child: CachedNetworkImage(
+                        imageUrl: anime.coverImageUrl,
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
-                ),
-              );
-            },
-          );
-        },
+                );
+              },
+            );
+          },
+        ),
       ),
     );
   }
