@@ -7,7 +7,7 @@ class Anime {
   final List<String> tags;
   final int episodes;
   final double averageScore;
-  final double popularity;
+  final int popularity;
   final double meanScore;
   final String type;
   final int runtime;
@@ -29,18 +29,23 @@ class Anime {
 
   factory Anime.fromJson(Map<String, dynamic> json) {
     return Anime(
-      title: json['title'],
-      englishTitle: json['englishTitle'] ?? '',
-      coverImageUrl: json['coverImageUrl'],
-      bannerImageUrl: json['bannerImageUrl'],
-      description: json['description'],
-      tags: List<String>.from(json['tags']),
-      episodes: json['episodes'],
-      averageScore: (json['averageScore'] as num).toDouble(),
-      popularity: (json['popularity'] as num).toDouble(),
-      meanScore: (json['meanScore'] as num).toDouble(),
-      type: json['type'],
-      runtime: json['runtime'],
+      title: json['title'] is Map
+          ? json['title']['romaji'] ?? ''
+          : json['title'] ?? '',
+      englishTitle: json['title'] is Map ? json['title']['english'] ?? '' : '',
+      coverImageUrl: json['coverImage']['large'] ?? '',
+      bannerImageUrl: json['bannerImage'] ?? '',
+      description: json['description'] ?? '',
+      tags: (json['tags'] as List<dynamic>?)
+              ?.map((tag) => tag['name'] as String)
+              .toList() ??
+          [],
+      episodes: json['episodes'] ?? 0,
+      averageScore: (json['averageScore'] as num?)?.toDouble() ?? 0.0,
+      popularity: (json['popularity'] as num?)?.toInt() ?? 0,
+      meanScore: (json['meanScore'] as num?)?.toDouble() ?? 0.0,
+      type: json['type'] ?? '',
+      runtime: (json['duration'] as num?)?.toInt() ?? 0,
     );
   }
 
