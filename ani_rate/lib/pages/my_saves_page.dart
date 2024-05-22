@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+
 import '../models/anime_model.dart';
 import 'anime_detail_page.dart';
 
@@ -68,27 +69,7 @@ class _MySavesPageState extends State<MySavesPage> {
                       itemBuilder: (context, index) {
                         final animeData =
                             savedAnimes[index].data() as Map<String, dynamic>;
-
-                        // Debugging: Print animeData
-                        print('Anime Data: $animeData');
-
-                        Anime? anime;
-                        try {
-                          anime = Anime.fromJson(animeData);
-                        } catch (e) {
-                          print('Error parsing anime data: $e');
-                          return ListTile(
-                            title: Text('Error loading anime',
-                                style: TextStyle(color: Colors.red)),
-                          );
-                        }
-
-                        if (anime == null) {
-                          return ListTile(
-                            title: Text('Invalid anime data',
-                                style: TextStyle(color: Colors.red)),
-                          );
-                        }
+                        final anime = Anime.fromJson(animeData);
 
                         return Dismissible(
                           key: Key(savedAnimes[index].id),
@@ -174,9 +155,7 @@ class _MySavesPageState extends State<MySavesPage> {
                                   Row(
                                     children: List.generate(5, (index) {
                                       return Icon(
-                                        index <
-                                                ((anime?.meanScore ?? 0) / 20)
-                                                    .round()
+                                        index < (anime.meanScore / 20).round()
                                             ? Icons.star
                                             : Icons.star_border,
                                         color: Colors.amber,
@@ -186,15 +165,13 @@ class _MySavesPageState extends State<MySavesPage> {
                                 ],
                               ),
                               onTap: () {
-                                if (anime != null) {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          AnimeDetailPage(anime: anime!),
-                                    ),
-                                  );
-                                }
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        AnimeDetailPage(anime: anime),
+                                  ),
+                                );
                               },
                             ),
                           ),

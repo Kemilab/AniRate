@@ -158,7 +158,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "reet_password".tr(),
+                          "reset_password".tr(),
                           style: GoogleFonts.poppins(
                             textStyle: TextStyle(
                               color: resetPasswordSuccess
