@@ -112,34 +112,34 @@ class AnimeProvider with ChangeNotifier {
       const String url = 'https://graphql.anilist.co';
 
       const query = '''
-      query (\$page: Int, \$perPage: Int, \$tag: String) {
-        Page(page: \$page, perPage: \$perPage) {
-          pageInfo {
-            hasNextPage
-          }
-          media(type: ANIME, tag: \$tag, sort: POPULARITY_DESC) {
-            title {
-              romaji
-              english
+        query (\$page: Int, \$perPage: Int, \$tag: String) {
+          Page(page: \$page, perPage: \$perPage) {
+            pageInfo {
+              hasNextPage
             }
-            coverImage {
-              large
-            }
-            bannerImage
-            averageScore
-            popularity
-            meanScore
-            episodes
-            description
-            type
-            duration
-            tags {
-              name
+            media(type: ANIME, tag: \$tag, sort: POPULARITY_DESC) {
+              title {
+                romaji
+                english
+              }
+              coverImage {
+                large
+              }
+              bannerImage
+              averageScore
+              popularity
+              meanScore
+              episodes
+              description
+              type
+              duration
+              tags {
+                name
+              }
             }
           }
         }
-      }
-    ''';
+      ''';
 
       final variables = {'page': _page, 'perPage': 10, 'tag': tag};
 
