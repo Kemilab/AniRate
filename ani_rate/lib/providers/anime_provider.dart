@@ -16,7 +16,7 @@ class AnimeProvider with ChangeNotifier {
 
   bool get hasMore => _hasMore;
 
-final AnimeService _animeService = AnimeService();
+  final AnimeService _animeService = AnimeService();
 
   AnimeProvider() {
     fetchAnime();
@@ -72,7 +72,7 @@ final AnimeService _animeService = AnimeService();
         final data = jsonDecode(response.body);
         final List<dynamic> fetchedAnime = data['data']['Page']['media'];
         final hasNextPage = data['data']['Page']['pageInfo']['hasNextPage'];
-        
+
         _hasMore = hasNextPage;
         _animeList.addAll(
           fetchedAnime.map((anime) => Anime.fromJson(anime)).toList(),
@@ -89,7 +89,7 @@ final AnimeService _animeService = AnimeService();
     notifyListeners();
   }
 
- Future<void> searchAnime(String query) async {
+  Future<void> searchAnime(String query) async {
     _isLoading = true;
     notifyListeners();
 
@@ -104,14 +104,14 @@ final AnimeService _animeService = AnimeService();
   }
 
   Future<void> fetchAnimeByTag(String tag) async {
-  if (_isLoading || !_hasMore) return;
+    if (_isLoading || !_hasMore) return;
 
-  _isLoading = true;
+    _isLoading = true;
 
-  try {
-    const String url = 'https://graphql.anilist.co';
+    try {
+      const String url = 'https://graphql.anilist.co';
 
-    const query = '''
+      const query = '''
       query (\$page: Int, \$perPage: Int, \$tag: String) {
         Page(page: \$page, perPage: \$perPage) {
           pageInfo {
@@ -141,44 +141,40 @@ final AnimeService _animeService = AnimeService();
       }
     ''';
 
-    final variables = {'page': _page, 'perPage': 10, 'tag': tag};
+      final variables = {'page': _page, 'perPage': 10, 'tag': tag};
 
-    final response = await http.post(
-      Uri.parse(url),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({'query': query, 'variables': variables}),
-    );
-
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      final List<dynamic> fetchedAnime = data['data']['Page']['media'];
-      final hasNextPage = data['data']['Page']['pageInfo']['hasNextPage'];
-      
-      _hasMore = hasNextPage;
-      
-      // Clear _animeList if fetching the first page of anime by tag
-      if (_page == 1) {
-        _animeList.clear();
-      }
-      
-      _animeList.addAll(
-        fetchedAnime.map((anime) => Anime.fromJson(anime)).toList(),
+      final response = await http.post(
+        Uri.parse(url),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'query': query, 'variables': variables}),
       );
-      if (hasNextPage) {
-        _page++; // Increment page only if there are more pages to fetch
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        final List<dynamic> fetchedAnime = data['data']['Page']['media'];
+        final hasNextPage = data['data']['Page']['pageInfo']['hasNextPage'];
+
+        _hasMore = hasNextPage;
+
+        // Clear _animeList if fetching the first page of anime by tag
+        if (_page == 1) {
+          _animeList.clear();
+        }
+
+        _animeList.addAll(
+          fetchedAnime.map((anime) => Anime.fromJson(anime)).toList(),
+        );
+        if (hasNextPage) {
+          _page++; // Increment page only if there are more pages to fetch
+        }
+      } else {
+        throw Exception('Failed to fetch anime by tag');
       }
-    } else {
-      throw Exception('Failed to fetch anime by tag');
+    } catch (error) {
+      print('Error fetching anime by tag: $error');
     }
-  } catch (error) {
-    print('Error fetching anime by tag: $error');
+
+    _isLoading = false;
+    notifyListeners();
   }
-
-  _isLoading = false;
-  notifyListeners();
 }
-
-
-
-}
-
